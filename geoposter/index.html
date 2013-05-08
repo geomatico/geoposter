@@ -1,0 +1,108 @@
+<!DOCTYPE html> 
+<html> 
+<head> 
+    <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>GeoPoster</title>
+    <link href="img/favicon.ico" rel="shortcut icon" />
+    <link rel="stylesheet" type="text/css" href="css/bootstrap.css" />
+    <link rel="stylesheet" type="text/css" href="css/bootstrap-responsive.css" />
+    <link rel="stylesheet" type="text/css" href="css/leaflet.css" />
+    <script type="text/javascript" src="js/leaflet.js"></script>
+    <script type="text/javascript" src="js/jquery.js"></script>
+    <style>
+        html {
+            height: 100%;
+        }
+
+        body {
+            height: 95%;
+            padding-bottom:60px;
+            -webkit-box-sizing: border-box; /* Safari/Chrome, other WebKit */
+            -moz-box-sizing: border-box;    /* Firefox, other Gecko */
+            box-sizing: border-box;         /* Opera/IE 8+ */
+        }
+
+        #map {
+            background: gray;
+            width: 100%;
+            height: 100%;
+            min-height: 100%;
+            display: block;
+        }
+        .fill { 
+            min-height: 100%;
+            height: 100%;
+        }
+    </style>
+    <script>
+        var map;
+        
+        function init() {
+
+            cloudmadeUrl = 'http://{s}.tile.cloudmade.com/f9b48b21a87048bfb118148491d22ec5/{styleId}/256/{z}/{x}/{y}.png',
+            cloudmadeAttribution = 'Map data &copy; OpenStreetMap contributors, imagery &copy; CloudMade';
+
+            ride = L.tileLayer(cloudmadeUrl, {styleId: 1714, attribution: cloudmadeAttribution});
+            minimal = L.tileLayer(cloudmadeUrl, {styleId: 22677, attribution: cloudmadeAttribution});
+            midnight = L.tileLayer(cloudmadeUrl, {styleId: 999, attribution: cloudmadeAttribution});
+            
+            map = L.map('map', {
+                center: [42.237039, 1.697192],
+                zoom: 8,
+                maxBounds: [[-90, -180], [90, 180]],
+                layers: [minimal]
+            });
+
+            L.control.layers({
+                "Ride": ride,
+                "Minimal": minimal,
+                "Midnight": midnight
+            }).addTo(map); 
+
+            icon = L.icon({
+                iconUrl: 'map-icons/pins/48/pin1.png',
+                iconSize: [48, 48],
+                iconAnchor: [24, 48]
+            }); 
+
+            L.marker([42.237039, 1.697192], {icon: icon}).addTo(map);
+        }
+    </script>
+</head>
+<body onload="init()">
+    <div class="container-fluid" style="margin-top:15px;">
+        <div class="navbar navbar-inverse">
+            <div class="navbar-inner">
+                <div class="container">
+                    <a class="brand" href="#">GeoPoster</a>
+                    <form class="navbar-search pull-right">
+                        <input type="text" class="search-query" placeholder="Cerca">
+                    </form>
+                    <small>&copy; Oscar Fonts</small>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="container-fluid fill">
+        <div class="row-fluid fill">
+            <div class="span9 thumbnail fill">
+                <div id="map"></div>
+            </div>
+            <div class="span3 thumbnail">
+                <img src="http://www.fotonatura.org/galerias/fotos/usr37256/12981374to.jpg" alt="Pedraforca">
+                <h3>El Pedraforca</h3>
+                <p>El <strong>Pedraforca</strong> és una emblemàtica muntanya de Catalunya, situada entre els termes municipals de Saldes i Gósol, al Berguedà. Té una forma molt peculiar, formada per dues carenes paral·leles (els pollegons) unides per un coll (l'Enforcadura).</p>
+                <p><em>Font: <a href="http://ca.wikipedia.org/wiki/Pedraforca" target="_blank">Wikipedia</a></em></p>
+                    <div class="btn-group pull-right">
+                        <button class="btn btn-danger">- Esborra</button>
+                        <button class="btn btn-primary"># Edita</button>
+                    </div>
+            </div>
+            <div class="span3 thumbnail" style="border:2px dashed #CCCCCC;height:100px;margin-top:10px;padding:10px;">
+                <button class="btn btn-success pull-right">+ Nou</button>
+            </div>
+        </div>
+    </div>
+</body>    
+</html>
