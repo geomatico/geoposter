@@ -4,12 +4,22 @@
     <meta http-equiv="content-type" content="text/html; charset=utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>GeoPoster</title>
-    <link href="img/favicon.ico" rel="shortcut icon" />
+    <link rel="shortcut icon" href="img/favicon.ico" />
+
+    <link rel="stylesheet" type="text/css" href="css/leaflet.css" />
     <link rel="stylesheet" type="text/css" href="css/bootstrap.css" />
     <link rel="stylesheet" type="text/css" href="css/bootstrap-responsive.css" />
-    <link rel="stylesheet" type="text/css" href="css/leaflet.css" />
+    <link rel="stylesheet" type="text/css" href="bootstrap-editable/css/bootstrap-editable.css" />
+    <link rel="stylesheet" type="text/css" href="bootstrap-editable/wysihtml5/bootstrap-wysihtml5-0.0.2/bootstrap-wysihtml5-0.0.2.css" />
+
+    <script type="text/javascript" src="js/jquery-1.9.1.js"></script>
     <script type="text/javascript" src="js/leaflet.js"></script>
-    <script type="text/javascript" src="js/jquery.js"></script>
+    <script type="text/javascript" src="js/bootstrap.js"></script>
+    <script type="text/javascript" src="bootstrap-editable/js/bootstrap-editable.min.js"></script>
+    <script src="bootstrap-editable/wysihtml5/bootstrap-wysihtml5-0.0.2/wysihtml5-0.3.0.js"></script>  
+    <script src="bootstrap-editable/wysihtml5/bootstrap-wysihtml5-0.0.2/bootstrap-wysihtml5-0.0.2.js"></script>
+    <script src="bootstrap-editable/wysihtml5/wysihtml5.js"></script>
+
     <style>
         html {
             height: 100%;
@@ -34,6 +44,42 @@
             min-height: 100%;
             height: 100%;
         }
+
+        .editable-click {
+            border: 2px dotted transparent;
+            text-decoration: none;
+        }
+
+        .editable-click:hover {
+            border: 2px dashed #CCCCCC;
+            text-decoration: none;
+        }
+
+        .thumbnail.editable, .thumbnail.editable:after {
+            border: 1px solid #CCCCCC;
+        }
+
+        .thumbnail.editable:after {
+            background-color: #F5F5F5;
+            border-radius: 0 4px 0 4px;
+            bottom: -3px;
+            color: #9DA0A4;
+            content: "Editable!";
+            font-size: 12px;
+            font-weight: bold;
+            left: -5px;
+            padding: 3px 7px;
+            position: relative;
+        }
+
+        .editable-unsaved {
+            font-weight: normal;
+        }
+
+        .thumbnail.editable {
+            margin-top: 10px;
+        }
+
     </style>
     <script>
         var map;
@@ -66,7 +112,33 @@
                 iconAnchor: [24, 48]
             }); 
 
-            L.marker([42.237039, 1.697192], {icon: icon}).addTo(map);
+            L.marker([42.237039, 1.697192], {icon: icon, draggable: true}).addTo(map);
+
+            $.fn.editable.defaults.mode = 'inline'; //'popup' or 'inline'
+            $('#title').editable({
+                mode: 'popup',
+                animation: true,
+                placement: 'left',
+                showbuttons: "bottom"
+
+            });
+
+            $('#content').editable({
+                showbuttons: "bottom",
+                mode: 'popup',
+                animation: true,
+                placement: 'left',
+                wysihtml5: {
+                    "font-styles": false, //Font styling, e.g. h1, h2, etc. Default true
+                    "emphasis": true, //Italics, bold, etc. Default true
+                    "lists": true, //(Un)ordered lists, e.g. Bullets, Numbers. Default true
+                    "html": false, //Button which allows you to edit the generated HTML. Default false
+                    "link": true, //Button to insert a link. Default true
+                    "image": true, //Button to insert an image. Default true,
+                    "color": false //Button to change color of font  
+                }
+            });
+
         }
     </script>
 </head>
@@ -76,10 +148,10 @@
             <div class="navbar-inner">
                 <div class="container">
                     <a class="brand" href="#">GeoPoster</a>
+                    <small>&copy; Oscar Fonts</small>
                     <form class="navbar-search pull-right">
                         <input type="text" class="search-query" placeholder="Cerca">
                     </form>
-                    <small>&copy; Oscar Fonts</small>
                 </div>
             </div>
         </div>
@@ -89,18 +161,15 @@
             <div class="span9 thumbnail fill">
                 <div id="map"></div>
             </div>
-            <div class="span3 thumbnail">
-                <img src="http://www.fotonatura.org/galerias/fotos/usr37256/12981374to.jpg" alt="Pedraforca">
-                <h3>El Pedraforca</h3>
-                <p>El <strong>Pedraforca</strong> és una emblemàtica muntanya de Catalunya, situada entre els termes municipals de Saldes i Gósol, al Berguedà. Té una forma molt peculiar, formada per dues carenes paral·leles (els pollegons) unides per un coll (l'Enforcadura).</p>
-                <p><em>Font: <a href="http://ca.wikipedia.org/wiki/Pedraforca" target="_blank">Wikipedia</a></em></p>
-                    <div class="btn-group pull-right">
-                        <button class="btn btn-danger">- Esborra</button>
-                        <button class="btn btn-primary"># Edita</button>
+            <div class="span3">
+                <button class="btn btn-large btn-block btn-primary"> Nou <img src="map-icons/pins/24/pin1.png" /></button>
+                <div class="thumbnail editable">
+                    <h3 id="title" data-type="text" data-original-title="Títol">El Pedraforca</h3>
+                    <div id="content" data-type="wysihtml5" data-original-title="Continguts">
+                        <img src="http://www.fotonatura.org/galerias/fotos/usr37256/12981374to.jpg" alt="Pedraforca" height="179" width="285">
+                        <br><br><span>El <b>Pedraforca</b> és una emblemàtica muntanya de Catalunya, situada entre els termes municipals de Saldes i Gósol, al Berguedà. Té una forma molt peculiar, formada per dues carenes paral·leles (els pollegons) unides per un coll (l'Enforcadura).</span><br><br><span>Font: <a href="http://ca.wikipedia.org/wiki/Pedraforca" rel="nofollow" target="_blank">Wikipedia</a><br><br></span>
                     </div>
-            </div>
-            <div class="span3 thumbnail" style="border:2px dashed #CCCCCC;height:100px;margin-top:10px;padding:10px;">
-                <button class="btn btn-success pull-right">+ Nou</button>
+                </div>
             </div>
         </div>
     </div>
