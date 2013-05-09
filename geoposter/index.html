@@ -20,6 +20,8 @@
     <script src="bootstrap-editable/wysihtml5/bootstrap-wysihtml5-0.0.2/bootstrap-wysihtml5-0.0.2.js"></script>
     <script src="bootstrap-editable/wysihtml5/wysihtml5.js"></script>
 
+    <script type="text/javascript" src="data/serverData.js"></script>
+
     <style>
         html {
             height: 100%;
@@ -45,12 +47,12 @@
             height: 100%;
         }
 
-        .editable-click {
-            border: 2px dotted transparent;
+        .editable-click, .leaflet-marker-icon {
+            border: 2px solid transparent;
             text-decoration: none;
         }
 
-        .editable-click:hover {
+        .editable-click:hover, .leaflet-marker-selected:hover {
             border: 2px dashed #CCCCCC;
             text-decoration: none;
         }
@@ -72,10 +74,6 @@
             position: relative;
         }
 
-        .editable-unsaved {
-            font-weight: normal;
-        }
-
         .thumbnail.editable {
             margin-top: 10px;
         }
@@ -83,9 +81,13 @@
     </style>
     <script>
         var map;
-        
-        function init() {
+        var data;
+        var selectedItem;
 
+        var defaultIconUrl = 'map-icons/pins/48/pin2.png';
+        var selectedIconUrl = 'map-icons/pins/48/pin1.png';
+
+        function init() {
             cloudmadeUrl = 'http://{s}.tile.cloudmade.com/f9b48b21a87048bfb118148491d22ec5/{styleId}/256/{z}/{x}/{y}.png',
             cloudmadeAttribution = 'Map data &copy; OpenStreetMap contributors, imagery &copy; CloudMade';
 
@@ -94,10 +96,10 @@
             midnight = L.tileLayer(cloudmadeUrl, {styleId: 999, attribution: cloudmadeAttribution});
             
             map = L.map('map', {
-                center: [42.237039, 1.697192],
-                zoom: 8,
+                center: [41.4504467428547, 2.1900558471679688],
+                zoom: 12,
                 maxBounds: [[-90, -180], [90, 180]],
-                layers: [minimal]
+                layers: [ride]
             });
 
             L.control.layers({
@@ -106,28 +108,22 @@
                 "Midnight": midnight
             }).addTo(map); 
 
-            icon = L.icon({
-                iconUrl: 'map-icons/pins/48/pin1.png',
-                iconSize: [48, 48],
-                iconAnchor: [24, 48]
-            }); 
+            load();
 
-            L.marker([42.237039, 1.697192], {icon: icon, draggable: true}).addTo(map);
-
-            $.fn.editable.defaults.mode = 'inline'; //'popup' or 'inline'
             $('#title').editable({
                 mode: 'popup',
-                animation: true,
                 placement: 'left',
-                showbuttons: "bottom"
-
-            });
+                showbuttons: "bottom",
+                animation: true,
+                unsavedclass: null
+            }).on('save', updateTitle);
 
             $('#content').editable({
-                showbuttons: "bottom",
                 mode: 'popup',
-                animation: true,
                 placement: 'left',
+                showbuttons: "bottom",
+                animation: true,
+                unsavedclass: null,
                 wysihtml5: {
                     "font-styles": false, //Font styling, e.g. h1, h2, etc. Default true
                     "emphasis": true, //Italics, bold, etc. Default true
@@ -137,9 +133,88 @@
                     "image": true, //Button to insert an image. Default true,
                     "color": false //Button to change color of font  
                 }
+            }).on('save', updateContent);
+        }
+
+        function load() {
+            data = $.parseJSON(localStorage.getItem("data")) || serverData;
+
+            var defaultIcon = L.icon({
+                iconUrl: defaultIconUrl,
+                iconSize: [48, 48],
+                iconAnchor: [24, 48]
             });
 
+            L.geoJson(data, {
+                pointToLayer: function (feature, latlng) {
+                    return L.marker(latlng, {
+                        title: feature.properties.Name,
+                        icon: defaultIcon,
+                        riseOnHover: true
+                    });
+                },
+                onEachFeature: function(feature, marker) {
+                    if (feature.properties && feature.properties.Description && feature.properties.Name) {
+                        marker.title = feature.properties.Name;
+                        marker.content = feature.properties.Description;
+                        marker.on('click', function(e) {
+                            selectItem(e.target);
+                        });
+                        marker.on('dragstart', function(e){
+                            selectItem(e.target);
+                        });
+                        marker.on('dragend', function(e){
+                            updateFeatureLocation(e.target);
+                        });
+                    }
+                }
+            }).addTo(map);
         }
+
+        function save() {
+            localStorage.setItem("data", JSON.stringify(data));
+        }
+
+        function selectItem(item) {
+            if (selectedItem) {
+                selectedItem.dragging.disable();
+                $(selectedItem._icon).removeClass("leaflet-marker-selected");
+                selectedItem._icon.src = defaultIconUrl;
+            }
+            selectedItem = item;
+            $(selectedItem._icon).addClass("leaflet-marker-selected");
+            selectedItem._icon.src = selectedIconUrl;
+            selectedItem.dragging.enable();
+
+            $("#info").show();
+            $("#title").editable('setValue', item.title);
+            $("#content").editable('setValue', item.content);
+        }
+
+        function updateFeatureLocation(item) {
+            getSelectedFeature().geometry.coordinates = [item.getLatLng().lng, item.getLatLng().lat];
+            save();
+        }
+
+        function updateTitle(e, params) {
+            getSelectedFeature().properties.Name = params.newValue;
+            save();
+            selectedItem.title = params.newValue;
+            selectedItem._icon.title = params.newValue; // Ugly, but no accessor method
+        }
+
+        function updateContent(e, params) {
+            getSelectedFeature().properties.Description = params.newValue;
+            save();
+            selectedItem.content = params.newValue;
+        }
+
+        function getSelectedFeature() {
+            return data.features.filter(function (feature) {
+              return feature.properties.Name == selectedItem.title;
+            })[0];
+        }
+
     </script>
 </head>
 <body onload="init()">
@@ -163,12 +238,9 @@
             </div>
             <div class="span3">
                 <button class="btn btn-large btn-block btn-primary"> Nou <img src="map-icons/pins/24/pin1.png" /></button>
-                <div class="thumbnail editable">
-                    <h3 id="title" data-type="text" data-original-title="Títol">El Pedraforca</h3>
-                    <div id="content" data-type="wysihtml5" data-original-title="Continguts">
-                        <img src="http://www.fotonatura.org/galerias/fotos/usr37256/12981374to.jpg" alt="Pedraforca" height="179" width="285">
-                        <br><br><span>El <b>Pedraforca</b> és una emblemàtica muntanya de Catalunya, situada entre els termes municipals de Saldes i Gósol, al Berguedà. Té una forma molt peculiar, formada per dues carenes paral·leles (els pollegons) unides per un coll (l'Enforcadura).</span><br><br><span>Font: <a href="http://ca.wikipedia.org/wiki/Pedraforca" rel="nofollow" target="_blank">Wikipedia</a><br><br></span>
-                    </div>
+                <div id="info" style="display:none;" class="thumbnail editable">
+                    <h3 id="title" data-type="text" data-original-title="Títol">Títol...</h3>
+                    <div id="content" data-type="wysihtml5" data-original-title="Continguts">Continguts...</div>
                 </div>
             </div>
         </div>
