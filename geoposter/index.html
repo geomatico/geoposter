@@ -52,7 +52,7 @@
             text-decoration: none;
         }
 
-        .editable-click:hover, .leaflet-marker-selected:hover {
+        .editable-click:hover, .leaflet-marker-selected:hover, .new-marker {
             border: 2px dashed #CCCCCC;
             text-decoration: none;
         }
@@ -80,12 +80,31 @@
 
     </style>
     <script>
+        /*
+        * TODO:
+        *
+        * - Add new
+        * - Delete
+        * - Title & content vs. Name & Description
+        * - No IDs, using titles 
+        * - Naming: Item, Feature, Marker, Layer, & different functions
+        * - Separate editable vs. non-editable
+        * - Persist in server
+        * - Authentication
+        */
+
         var map;
         var data;
         var selectedItem;
 
         var defaultIconUrl = 'map-icons/pins/48/pin2.png';
         var selectedIconUrl = 'map-icons/pins/48/pin1.png';
+
+        var defaultIcon = L.icon({
+            iconUrl: defaultIconUrl,
+            iconSize: [48, 48],
+            iconAnchor: [24, 48]
+        });
 
         function init() {
             cloudmadeUrl = 'http://{s}.tile.cloudmade.com/f9b48b21a87048bfb118148491d22ec5/{styleId}/256/{z}/{x}/{y}.png',
@@ -96,7 +115,7 @@
             midnight = L.tileLayer(cloudmadeUrl, {styleId: 999, attribution: cloudmadeAttribution});
             
             map = L.map('map', {
-                center: [41.4504467428547, 2.1900558471679688],
+                center: [41.437514611861786, 2.206707000732422],
                 zoom: 12,
                 maxBounds: [[-90, -180], [90, 180]],
                 layers: [ride]
@@ -106,7 +125,7 @@
                 "Ride": ride,
                 "Minimal": minimal,
                 "Midnight": midnight
-            }).addTo(map); 
+            }).addTo(map);
 
             load();
 
@@ -134,16 +153,45 @@
                     "color": false //Button to change color of font  
                 }
             }).on('save', updateContent);
+
+
+            $("#new").click(function() {
+                marker = L.marker(map.getCenter(), {
+                    icon: defaultIcon,
+                    riseOnHover: true
+                });
+
+                marker.title = "Títol...";
+                marker.content = "Contingut...";
+                marker.on('click', function(e) {
+                    selectItem(e.target);
+                });
+                marker.on('dragstart', function(e) {
+                    selectItem(e.target);
+                });
+                marker.on('dragend', function(e) {
+                    updateFeatureLocation(e.target);
+                });
+
+                marker.addTo(map);
+                data.features.push({
+                    "type":"Feature",
+                    "properties": {
+                        "Name": "Títol...",
+                        "Description": "Contingut..."
+                    },
+                    "geometry": {
+                        "type": "Point",
+                        "coordinates": [2,41]
+                    }
+                });
+                save();
+                selectItem(marker);
+            });
         }
 
         function load() {
             data = $.parseJSON(localStorage.getItem("data")) || serverData;
-
-            var defaultIcon = L.icon({
-                iconUrl: defaultIconUrl,
-                iconSize: [48, 48],
-                iconAnchor: [24, 48]
-            });
 
             L.geoJson(data, {
                 pointToLayer: function (feature, latlng) {
@@ -237,7 +285,7 @@
                 <div id="map"></div>
             </div>
             <div class="span3">
-                <button class="btn btn-large btn-block btn-primary"> Nou <img src="map-icons/pins/24/pin1.png" /></button>
+                <button id="new" class="btn btn-large btn-block btn-primary"> Nou <img src="map-icons/pins/24/pin1.png" /></button>
                 <div id="info" style="display:none;" class="thumbnail editable">
                     <h3 id="title" data-type="text" data-original-title="Títol">Títol...</h3>
                     <div id="content" data-type="wysihtml5" data-original-title="Continguts">Continguts...</div>
