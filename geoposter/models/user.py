@@ -12,8 +12,17 @@ class User(Base):
     
     __tablename__ = 'user'
     
-    id = Column(Integer, primary_key=True)
+    id = Column(Integer, primary_key=True, autoincrement=True)
     name = Column(String(30), nullable=None)
     email = Column(String(30), nullable=None)
+    password = Column(String(30), nullable=None)
     maps = relationship("Map", backref=backref('maps'))
+    
+    def __init__(self, name, email, password):
+        self.name = name
+        self.email = email
+        self.password = password
+        
+    def __repr__(self):
+        return "<User ('%s','%s', '%s')>" % (self.name, self.email, self.password)
     
