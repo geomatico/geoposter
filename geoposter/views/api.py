@@ -6,13 +6,14 @@ Created on 11/06/2013
 from functools import wraps
 from flask import Blueprint, request, Response, g
 from models.user import User
-from database import db_session
+from database import engine
+from sqlalchemy.orm import sessionmaker
 
 api = Blueprint('api', __name__, url_prefix='/api')
 
 def check_auth(username, password):
     
-    authuser = db_session.query(User).filter(User.name == username).first()
+    authuser = g.db.query(User).filter(User.name == username).first()
     
     if (authuser is not None):
         if (authuser.password == password):
@@ -37,8 +38,20 @@ def requires_auth(f):
             return authenticate()
         return f(*args, **kwargs)
     return decorated
-    
+
+@api.before_request
+def before_request():
+    session = sessionmaker(bind=engine)
+    g.db = session()
+
+@api.teardown_request
+def teardown_request(exception):
+    db = getattr(g, 'db', None)
+    if db is not None:
+        db.close()
+        
 @api.route('/')
+@requires_auth
 def index():
     return 'Welcome to GeoPoster!'
 
