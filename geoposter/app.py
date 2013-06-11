@@ -7,35 +7,30 @@ Created on 10/06/2013
 from database import init_db
 from config import DefaultConfig
 from flask import Flask
-
+from views.api import api
 
 DEFAULT_APP_NAME = "geoposter"
 
-def create_app(config=None, app_name=None, modules=None):
+
+def create_app(config=None, app_name=None, blueprints=None):
     
     if app_name is None:
         app_name = DEFAULT_APP_NAME
 
     app = Flask(app_name)
+    app.register_blueprint(api)
     
     configure_app(app, config)
     
     init_db()
-    app.debug = app.config.get('DEBUG')
     
     return app
 
 def configure_app(app, config):
     
-    app.config.from_object(DefaultConfig())
+    app.config.from_object(DefaultConfig)
 
     if config is not None:
         app.config.from_object(config)
 
     app.config.from_envvar('APP_CONFIG', silent=True)
-    
-if __name__ == '__main__':
-    
-    app = create_app()
-    app.run();
-    

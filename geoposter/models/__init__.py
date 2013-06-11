@@ -1,2 +1,2 @@
-from .map import Map
-from .marker import Marker
+from flask import Flask
+app = Flask(__name__)
