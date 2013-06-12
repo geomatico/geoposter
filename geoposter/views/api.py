@@ -4,8 +4,9 @@ Created on 11/06/2013
 @author: michogarcia
 '''
 from functools import wraps
-from flask import Blueprint, request, Response, g
+from flask import Blueprint, request, Response, g, jsonify
 from models.user import User
+from models.marker import Marker
 from database import engine
 from sqlalchemy.orm import sessionmaker
 
@@ -55,4 +56,14 @@ def teardown_request(exception):
 def index():
     return 'Welcome to GeoPoster!'
 
+@api.route('/marker', methods=['GET'])
+#@requires_auth
+def getmarkers():
+    
+    sql = "SELECT marker.fid AS marker_fid, marker.id AS marker_id, marker.title AS marker_title\
+            , marker.description AS marker_description, ST_AsGeoJSON(marker.geom)\
+             AS marker_geom, marker.user_id AS marker_user_id FROM marker"  
+    markers = g.db.query(Marker).from_statement(sql).all()
+
+    return jsonify(type ='FeatureCollection', features = [marker.AsJSON for marker in markers])
     
