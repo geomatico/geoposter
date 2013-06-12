@@ -4,13 +4,13 @@ Created on 11/06/2013
 @author: michogarcia
 '''
 from functools import wraps
-from flask import Blueprint, request, Response, g, jsonify
+from flask import Blueprint, request, Response, g, jsonify, url_for, redirect
 from models.user import User
 from models.marker import Marker
 from database import engine
 from sqlalchemy.orm import sessionmaker
 
-api = Blueprint('api', __name__, url_prefix='/api')
+api = Blueprint('api', __name__, url_prefix='/geoposter')
 
 def check_auth(username, password):
     
@@ -52,9 +52,8 @@ def teardown_request(exception):
         db.close()
         
 @api.route('/')
-@requires_auth
-def index():
-    return 'Welcome to GeoPoster!'
+def home():
+    return redirect(url_for('static', filename='index.html'))
 
 @api.route('/marker', methods=['GET'])
 #@requires_auth
@@ -64,6 +63,9 @@ def getmarkers():
             , marker.description AS marker_description, ST_AsGeoJSON(marker.geom)\
              AS marker_geom, marker.user_id AS marker_user_id FROM marker"  
     markers = g.db.query(Marker).from_statement(sql).all()
+    markersJSON = list()
+    for marker in markers:
+        markersJSON.append(marker.AsGeoJSON)
 
-    return jsonify(type ='FeatureCollection', features = [marker.AsJSON for marker in markers])
+    return jsonify(type ='FeatureCollection', features = markersJSON)
     

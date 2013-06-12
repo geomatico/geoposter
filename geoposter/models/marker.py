@@ -3,6 +3,7 @@ import uuid
 from sqlalchemy import ForeignKey, Column, String, Integer
 from geoalchemy2 import Geometry
 from database import Base
+from flask import json
 
 class Marker(Base):
     
@@ -18,9 +19,9 @@ class Marker(Base):
     user_id = Column(Integer, ForeignKey('user.id'))
     
     @property
-    def AsJSON(self):
-        JSON = '{type: Feature, geometry:' + self.geom + ', properties: {fid: ' + str(self.fid) + '\
-                , id:' + self.id + ', title: ' + self.title + ', description: ' + self.description + '}}' 
+    def AsGeoJSON(self):
+        JSON = {'type' : 'Feature', 'geometry' : json.loads(self.geom) , 'properties' : [{'fid' : self.fid, 'id' : self.id, 'title' : self.title, 'description' : self.description }]}
+         
         return JSON
     
     def __init__(self, title, description):
