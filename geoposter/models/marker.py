@@ -20,7 +20,7 @@ class Marker(Base):
     
     @property
     def AsGeoJSON(self):
-        JSON = {'type' : 'Feature', 'geometry' : json.loads(self.geom) , 'properties' : [{'fid' : self.fid, 'id' : self.id, 'title' : self.title, 'description' : self.description }]}
+        JSON = {'type' : 'Feature', 'geometry' : json.loads(self.geom) , 'properties' : {'fid' : self.fid, 'id' : self.id, 'title' : self.title, 'description' : self.description }}
          
         return JSON
     
