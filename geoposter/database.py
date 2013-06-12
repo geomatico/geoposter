@@ -13,5 +13,5 @@ Base = declarative_base()
 
 def init_db():
     
-    from models import map, marker, user 
+    from models import marker, user 
     Base.metadata.create_all(engine)
