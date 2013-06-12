@@ -29,7 +29,8 @@ var defaultIcon = L.icon({
 });
 
 function init() {
-	cloudmadeUrl = 'http://{s}.tile.cloudmade.com/f9b48b21a87048bfb118148491d22ec5/{styleId}/256/{z}/{x}/{y}.png', cloudmadeAttribution = 'Map data &copy; OpenStreetMap contributors, imagery &copy; CloudMade';
+	cloudmadeUrl = 'http://{s}.tile.cloudmade.com/f9b48b21a87048bfb118148491d22ec5/{styleId}/256/{z}/{x}/{y}.png';
+	cloudmadeAttribution = 'Map data &copy; OpenStreetMap contributors, imagery &copy; CloudMade';
 
 	ride = L.tileLayer(cloudmadeUrl, {
 		styleId : 1714,
@@ -120,32 +121,36 @@ function init() {
 }
 
 function load() {
-	data = $.parseJSON(localStorage.getItem("data")) || serverData;
 
-	L.geoJson(data, {
-		pointToLayer : function(feature, latlng) {
-			return L.marker(latlng, {
-				title : feature.properties.Name,
-				icon : defaultIcon,
-				riseOnHover : true
-			});
-		},
-		onEachFeature : function(feature, marker) {
-			if (feature.properties && feature.properties.Description && feature.properties.Name) {
-				marker.title = feature.properties.Name;
-				marker.content = feature.properties.Description;
-				marker.on('click', function(e) {
-					selectItem(e.target);
-				});
-				marker.on('dragstart', function(e) {
-					selectItem(e.target);
-				});
-				marker.on('dragend', function(e) {
-					updateFeatureLocation(e.target);
-				});
-			}
+	$.ajax({
+		url: 'http://localhost:5000/geoposter/marker',
+		success : function(data, status) {
+			L.geoJson(data, {
+				pointToLayer : function(feature, latlng) {
+					return L.marker(latlng, {
+						title : feature.properties.title,
+						icon : defaultIcon,
+						riseOnHover : true
+					});
+				},
+				onEachFeature : function(feature, marker) {
+					if (feature.properties && feature.properties.description && feature.properties.title) {
+						marker.title = feature.properties.title;
+						marker.content = feature.properties.description;
+						marker.on('click', function(e) {
+							selectItem(e.target);
+						});
+						marker.on('dragstart', function(e) {
+							selectItem(e.target);
+						});
+						marker.on('dragend', function(e) {
+							updateFeatureLocation(e.target);
+						});
+					}
+				}
+			}).addTo(map);
 		}
-	}).addTo(map);
+	})
 }
 
 function save() {
@@ -174,7 +179,7 @@ function updateFeatureLocation(item) {
 }
 
 function updateTitle(e, params) {
-	getSelectedFeature().properties.Name = params.newValue;
+	getSelectedFeature().properties.title = params.newValue;
 	save();
 	selectedItem.title = params.newValue;
 	selectedItem._icon.title = params.newValue;
@@ -189,7 +194,7 @@ function updateContent(e, params) {
 
 function getSelectedFeature() {
 	return data.features.filter(function (feature) {
-	return feature.properties.Name == selectedItem.title;
+	return feature.properties.title == selectedItem.title;
 	})[0];
 }
 
