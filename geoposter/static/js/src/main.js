@@ -28,6 +28,8 @@ var defaultIcon = L.icon({
 	iconAnchor : [24, 48]
 });
 
+GeoPoster.conector = new ConectorREST();
+
 function init() {
 	cloudmadeUrl = 'http://{s}.tile.cloudmade.com/f9b48b21a87048bfb118148491d22ec5/{styleId}/256/{z}/{x}/{y}.png';
 	cloudmadeAttribution = 'Map data &copy; OpenStreetMap contributors, imagery &copy; CloudMade';
@@ -104,18 +106,22 @@ function init() {
 		});
 
 		marker.addTo(map);
-		data.features.push({
+
+		markerJSON = {
 			"type" : "Feature",
 			"properties" : {
-				"Name" : "Títol...",
-				"Description" : "Contingut..."
+				"title" : "Títol...",
+				"description" : "Contingut..."
 			},
 			"geometry" : {
 				"type" : "Point",
-				"coordinates" : [2, 41]
+				"coordinates" : [marker.getLatLng().lat, 
+								marker.getLatLng().lng]
 			}
-		});
-		save();
+		};
+		
+		GeoPoster.save(markerJSON);
+		//save();
 		selectItem(marker);
 	});
 }
@@ -194,7 +200,7 @@ function updateContent(e, params) {
 
 function getSelectedFeature() {
 	return data.features.filter(function (feature) {
-	return feature.properties.title == selectedItem.title;
+		return feature.properties.title == selectedItem.title;
 	})[0];
 }
 
