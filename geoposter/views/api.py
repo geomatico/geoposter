@@ -4,7 +4,7 @@ Created on 11/06/2013
 @author: michogarcia
 '''
 from functools import wraps
-from flask import Blueprint, request, Response, g, jsonify, url_for, redirect
+from flask import Blueprint, request, Response, g, jsonify, url_for, redirect, json
 from models.user import User
 from models.marker import Marker
 from database import engine
@@ -57,7 +57,7 @@ def home():
 
 @api.route('/marker', methods=['GET'])
 #@requires_auth
-def getmarkers():
+def getMarkers():
     
     sql = "SELECT marker.fid AS marker_fid, marker.id AS marker_id, marker.title AS marker_title\
             , marker.description AS marker_description, ST_AsGeoJSON(marker.geom)\
@@ -68,4 +68,21 @@ def getmarkers():
         markersJSON.append(marker.AsGeoJSON)
 
     return jsonify(type ='FeatureCollection', features = markersJSON)
+
+@api.route('/marker', methods=['POST'])
+def insertMarker():
+    
+    markerAsJSON = json.loads(request.data)
+    marker = Marker(markerAsJSON)
+    #HARDCODE FOREVER!!
+    marker.user_id = 1
+    g.db.add(marker)
+    g.db.commit()
+    
+    markerinserted = g.db.query(Marker).filter_by(id=marker.id).first()
+    
+    if (markerinserted == None):
+        return jsonify(success=False, marker='null')
+    else:
+        return jsonify(success=True, marker=marker.id)
     
