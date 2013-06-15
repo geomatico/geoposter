@@ -84,7 +84,7 @@ def insertMarker():
     if (markerinserted == None):
         return jsonify(success=False, marker='null')
     else:
-        return jsonify(success=True, marker=marker.id)
+        return jsonify(success=True, marker_id=marker.id)
 
 @api.route('/marker/<marker_id>', methods=['GET'])
 def getMarker(marker_id):
@@ -116,6 +116,6 @@ def deleteMarker(marker_id):
     g.db.delete(marker);
     g.db.commit()
     
-    return 'delete'   
+    return 'delete'
     
 

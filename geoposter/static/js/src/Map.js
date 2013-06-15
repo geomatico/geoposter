@@ -222,7 +222,10 @@ GeoPoster.Map = function() {
 	}
 	
 	this.saved = function(data) {
-		console.log('saved', data);
+		console.log(data, this.selectedItem)
+		if (data.success == true) {
+			this.selectedItem.feature.properties.id = data.marker_id
+		}
 	}
 	
 	this.updated = function(data) {

@@ -23,10 +23,10 @@ var ConectorREST =  function(URL) {
 				'Content-Type' : 'application/json; charset=UTF-8'
 			},
 			success : function(data, status) {
-				GeoPoster.map.saved({success : true, data : data});
+				GeoPoster.map.saved(data);
 			},
 			error : function(data, status) {
-				GeoPoster.map.saved({success : false, data : data});
+				GeoPoster.map.saved(data);
 			}
 		})
 	};
