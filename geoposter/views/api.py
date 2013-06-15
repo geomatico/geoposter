@@ -109,6 +109,13 @@ def updateMarker(marker_id):
     
     return 'done'
     
+@api.route('/marker/<marker_id>', methods=['DELETE'])
+def deleteMarker(marker_id):
     
+    marker = g.db.query(Marker).filter_by(id=marker_id).first()
+    g.db.delete(marker);
+    g.db.commit()
+    
+    return 'delete'   
     
 

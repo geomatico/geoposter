@@ -150,7 +150,7 @@ GeoPoster.Map = function() {
 
 			marker.addTo(this_.map);
 
-			markerJSON = {
+			marker.feature = {
 				"type" : "Feature",
 				"properties" : {
 					"title" : "Títol...",
@@ -162,13 +162,24 @@ GeoPoster.Map = function() {
 				}
 			};
 
-			this_.save(markerJSON);
+			this_.save(marker.feature);
 
 			this_.selectItem(marker);
+		})		
+
+		$('#map').on('keydown', null, this, function(e) {
+			var this_ = e.data;
+			var keycode = (event.keyCode ? event.keyCode : event.which);
+			if (keycode == 46 || keycode == 8) {
+				if (this_.selectedItem != null) {
+					GeoPoster.conector.remove(this_.selectedItem.feature.properties.id)
+					this_.map.removeLayer(this_.selectedItem);
+					this_.selectedItem = null;
+				}
+			}
 		})
 	}
 	
-
 	this.selectItem = function(item) {
 		if (this.selectedItem) {			
 			this.selectedItem.dragging.disable();
@@ -216,5 +227,9 @@ GeoPoster.Map = function() {
 	
 	this.updated = function(data) {
 		console.log('updated', data);
-	}	
+	}
+	
+	this.deleted = function(data) {
+		console.log('deleted', data);
+	}
 }

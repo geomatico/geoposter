@@ -5,6 +5,7 @@ var ConectorREST =  function(URL) {
 	this.load = function() {
 		$.ajax({
 			url: this.URL + '/marker',
+			dataType : 'json',
 			success : function(data, status) {
 				GeoPoster.map.load(data);
 			}
@@ -17,6 +18,7 @@ var ConectorREST =  function(URL) {
 			type : 'POST',
 			data : JSON.stringify(markerAsJSON),
 			context : this,
+			dataType : 'json',
 			headers : {
 				'Content-Type' : 'application/json; charset=UTF-8'
 			},
@@ -35,6 +37,7 @@ var ConectorREST =  function(URL) {
 			type : 'PUT',
 			data : JSON.stringify(markerAsJSON),
 			context : this,
+			dataType : 'json',
 			headers : {
 				'Content-Type' : 'application/json; charset=UTF-8'
 			},
@@ -45,5 +48,23 @@ var ConectorREST =  function(URL) {
 				GeoPoster.map.updated({success : false, data : data});
 			}
 		})		
+	};
+	
+	this.remove = function(marker_id) {
+		$.ajax({
+			url : this.URL + '/marker/' + marker_id,
+			type : 'DELETE',
+			context : this,
+			dataType : 'json',
+			headers : {
+				'Content-Type' : 'application/json; charset=UTF-8'
+			},
+			success : function(data, status) {
+				GeoPoster.map.deleted({success : true, data : data});
+			},
+			error : function(data, status) {
+				GeoPoster.map.deleted({success : false, data : data});
+			}
+		})
 	}
 }
