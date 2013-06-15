@@ -27,5 +27,6 @@ var GeoPoster = {
 	 * 
 	 */
 	IConector : new IConector('IConector', ['save', 
-											'load'])
+											'load',
+											'update'])
 }

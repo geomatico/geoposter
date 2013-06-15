@@ -186,7 +186,8 @@ GeoPoster.Map = function() {
 	}
 
 	this.updateFeatureLocation = function(event) {
-
+		event.feature.geometry.coordinates = [event._latlng.lat, event._latlng.lng]
+		GeoPoster.conector.update(event.feature);
 	}
 
 	this.updateTitle = function(e, params) {
@@ -210,6 +211,10 @@ GeoPoster.Map = function() {
 	}
 	
 	this.saved = function(data) {
-
+		console.log('saved', data);
+	}
+	
+	this.updated = function(data) {
+		console.log('updated', data);
 	}	
 }

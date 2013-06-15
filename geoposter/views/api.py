@@ -85,4 +85,30 @@ def insertMarker():
         return jsonify(success=False, marker='null')
     else:
         return jsonify(success=True, marker=marker.id)
+
+@api.route('/marker/<marker_id>', methods=['GET'])
+def getMarker(marker_id):
     
+    sql = "SELECT marker.fid AS marker_fid, marker.id AS marker_id, marker.title AS marker_title\
+            , marker.description AS marker_description, ST_AsGeoJSON(marker.geom)\
+             AS marker_geom, marker.user_id AS marker_user_id FROM marker where marker.id = '" + marker_id + "'"
+    marker = g.db.query(Marker).from_statement(sql).first()
+    #marker = g.db.query(Marker).filter_by(id=marker_id).first()
+    
+    if (marker == None):
+        return jsonify(success = False)
+    else:
+        return jsonify(marker.AsGeoJSON)
+    
+@api.route('/marker/<marker_id>', methods=['PUT'])
+def updateMarker(marker_id):
+    
+    marker = Marker(json.loads(request.data))
+    g.db.query(Marker).filter_by(id=marker_id).update({'title' : marker.title, 'description' : marker.description, 'geom' : marker.geom})
+    g.db.commit()
+    
+    return 'done'
+    
+    
+    
+

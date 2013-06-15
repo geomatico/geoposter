@@ -28,4 +28,22 @@ var ConectorREST =  function(URL) {
 			}
 		})
 	};
+	
+	this.update = function(markerAsJSON) {
+		$.ajax({
+			url : this.URL + '/marker/' + markerAsJSON.properties.id,
+			type : 'PUT',
+			data : JSON.stringify(markerAsJSON),
+			context : this,
+			headers : {
+				'Content-Type' : 'application/json; charset=UTF-8'
+			},
+			success : function(data, status) {
+				GeoPoster.map.updated({success : true, data : data});
+			},
+			error : function(data, status) {
+				GeoPoster.map.updated({success : false, data : data});
+			}
+		})		
+	}
 }
