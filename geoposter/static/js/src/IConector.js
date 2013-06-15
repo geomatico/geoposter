@@ -3,7 +3,7 @@
  * @param {String} name
  * @param {Array(String)} methods
  */
-var IGeoPoster = function(name, methods) {
+var IConector = function(name, methods) {
 		if (arguments.length != 2) {
 			throw new Error("Interface constructor called with " + arguments.length + " arguments, but expected exactly 2.");
 		}
@@ -22,19 +22,19 @@ var IGeoPoster = function(name, methods) {
  * 
  * @param {Object} object
  */
-IGeoPoster.ensureImplements = function(object) {
+IConector.ensureImplements = function(object) {
 	if (arguments.length < 2) {
 		throw new Error("Function Interface.ensureImplements called with " + arguments.length + " arguments, but expected at least 2.");
 	}
 	for (var i = 1, len = arguments.length; i < len; i++) {
 		var interface = arguments[i];
-		if (interface.constructor !== IGeoPoster) {
-			throw new Error("Function Interface.ensureImplements expects arguments two and above to be instances of IGeoPoster.");
+		if (interface.constructor !== IConector) {
+			throw new Error("Function Interface.ensureImplements expects arguments two and above to be instances of IConector.");
 		}
 		for (var j = 0, methodsLen = interface.methods.length; j < methodsLen; j++) {
 			var method = interface.methods[j];
 			if (!object[method] || typeof object[method] !== 'function') {
-				throw new Error("Function IGeoPoster.ensureImplements: object does not implement the " + interface.name + " interface. Method " + method + " was not found.");
+				throw new Error("Function IConector.ensureImplements: object does not implement the " + interface.name + " interface. Method " + method + " was not found.");
 			}
 		}
 	}

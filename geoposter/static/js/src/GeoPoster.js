@@ -8,20 +8,24 @@ var GeoPoster = {
 	/**
 	 * 
 	 */
+	map : null,
+	
+	/**
+	 * 
+	 */
 	conector : null,
 	
 	/**
 	 * 
 	 */
-	IConector : new IGeoPoster('IConector', ['save']),
+	setConector : function(conector) {
+		IConector.ensureImplements(conector, this.IConector)
+		this.conector = conector;
+	},
 	
 	/**
 	 * 
- 	 * @param {Object} JSON
 	 */
-	save : function(JSON) {
-		IGeoPoster.ensureImplements(this.conector, this.IConector)
-		this.conector.save(JSON);
-	}
+	IConector : new IConector('IConector', ['save', 
+											'load'])
 }
-
