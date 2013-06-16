@@ -31,7 +31,7 @@ class Marker(Base):
         self.id = str(uuid.uuid4())
         self.title = markerAsJSON['properties']['title']
         self.description = markerAsJSON['properties']['description']
-        self.geom = 'SRID=' + str(self.SRID) + ';' + self.TYPE + '(' + str(markerAsJSON['geometry']['coordinates'][self.LAT]) + ' ' + str(markerAsJSON['geometry']['coordinates'][self.LON]) + ')'
+        self.geom = 'SRID=' + str(self.SRID) + ';' + self.TYPE + '(' + str(markerAsJSON['geometry']['coordinates'][self.LON]) + ' ' + str(markerAsJSON['geometry']['coordinates'][self.LAT]) + ')'
         
     def __repr__(self):
         return "<Marker('%s','%s', '%s', '%s')>" % (self.id, self.title, self.description, self.geom)

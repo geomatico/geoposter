@@ -107,7 +107,7 @@ def updateMarker(marker_id):
     g.db.query(Marker).filter_by(id=marker_id).update({'title' : marker.title, 'description' : marker.description, 'geom' : marker.geom})
     g.db.commit()
     
-    return 'done'
+    return jsonify(success = True)
     
 @api.route('/marker/<marker_id>', methods=['DELETE'])
 def deleteMarker(marker_id):
@@ -116,6 +116,6 @@ def deleteMarker(marker_id):
     g.db.delete(marker);
     g.db.commit()
     
-    return 'delete'
+    return jsonify(success = True)
     
 

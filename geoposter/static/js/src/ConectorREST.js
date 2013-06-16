@@ -42,10 +42,10 @@ var ConectorREST =  function(URL) {
 				'Content-Type' : 'application/json; charset=UTF-8'
 			},
 			success : function(data, status) {
-				GeoPoster.map.updated({success : true, data : data});
+				GeoPoster.map.updated(data);
 			},
 			error : function(data, status) {
-				GeoPoster.map.updated({success : false, data : data});
+				GeoPoster.map.updated(data);
 			}
 		})		
 	};
@@ -60,10 +60,10 @@ var ConectorREST =  function(URL) {
 				'Content-Type' : 'application/json; charset=UTF-8'
 			},
 			success : function(data, status) {
-				GeoPoster.map.deleted({success : true, data : data});
+				GeoPoster.map.deleted(data);
 			},
 			error : function(data, status) {
-				GeoPoster.map.deleted({success : false, data : data});
+				GeoPoster.map.deleted(data);
 			}
 		})
 	}

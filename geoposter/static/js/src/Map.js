@@ -22,7 +22,7 @@ GeoPoster.Map = function() {
 	
 	this.map = null;
 	
-	this.selectItem = null;
+	this.selectedItem = null;
 	
 	/**
 	 * 
@@ -104,7 +104,7 @@ GeoPoster.Map = function() {
 			showbuttons : "bottom",
 			animation : true,
 			unsavedclass : null
-		}).on('save', this.updateTitle);
+		}).on('save', null, this, this.updateTitle);
 
 		$('#content').editable({
 			mode : 'popup',
@@ -121,7 +121,7 @@ GeoPoster.Map = function() {
 				"image" : true, //Button to insert an image. Default true,
 				"color" : false //Button to change color of font
 			}
-		}).on('save', this.updateContent);
+		}).on('save', null, this, this.updateContent);
 
 		$('#new').on('click', null, this, function(e) {
 			
@@ -145,7 +145,7 @@ GeoPoster.Map = function() {
 				this_.selectItem(e.target);
 			});
 			marker.on('dragend', function(e) {
-				this_.updateFeatureLocation(e);
+				this_.updateFeatureLocation(e.target);
 			});
 
 			marker.addTo(this_.map);
@@ -158,7 +158,7 @@ GeoPoster.Map = function() {
 				},
 				"geometry" : {
 					"type" : "Point",
-					"coordinates" : [marker.getLatLng().lat, marker.getLatLng().lng]
+					"coordinates" : [marker.getLatLng().lng, marker.getLatLng().lat]
 				}
 			};
 
@@ -197,34 +197,31 @@ GeoPoster.Map = function() {
 	}
 
 	this.updateFeatureLocation = function(event) {
-		event.feature.geometry.coordinates = [event._latlng.lat, event._latlng.lng]
+		event.feature.geometry.coordinates = [event._latlng.lng, event._latlng.lat]
 		GeoPoster.conector.update(event.feature);
 	}
 
 	this.updateTitle = function(e, params) {
-		this.getSelectedFeature().properties.title = params.newValue;
-		this.save();
-		this.selectedItem.title = params.newValue;
-		this.selectedItem._icon.title = params.newValue;
+		var item = e.data.selectedItem;
+		item.feature.properties.title = params.newValue;
+		item.title = params.newValue;
+		item._icon.title = params.newValue;
+		GeoPoster.conector.update(item.feature);
 		// Ugly, but no accessor method
 	}
 
 	this.updateContent = function(e, params) {
-		this.getSelectedFeature().properties.description = params.newValue;
-		this.save();
-		this.selectedItem.content = params.newValue;
+		console.log(e.data.selectedItem.feature);
+		var item = e.data.selectedItem;
+		item.feature.properties.description = params.newValue;
+		item.content = params.newValue;
+		console.log(item.feature);
+		GeoPoster.conector.update(item.feature);
 	}
 
-	this.getSelectedFeature = function(feature) {
-		return data.features.filter(function (feature) {
-			return feature.properties.title == selectedItem.title;
-		})[0];
-	}
-	
 	this.saved = function(data) {
-		console.log(data, this.selectedItem)
-		if (data.success == true) {
-			this.selectedItem.feature.properties.id = data.marker_id
+		if (this.selectedItem.feature.properties.id == undefined) {
+			this.selectedItem.feature.properties.id = data.marker_id;
 		}
 	}
 	
