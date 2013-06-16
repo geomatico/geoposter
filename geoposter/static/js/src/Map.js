@@ -48,7 +48,7 @@ GeoPoster.Map = function() {
 				});
 			},
 			onEachFeature : function(feature, marker) {
-				if (feature.properties && feature.properties.description && feature.properties.title) {
+				if (feature.properties && feature.properties.description != undefined && feature.properties.title != undefined) {
 					marker.title = feature.properties.title;
 					marker.content = feature.properties.description;
 					marker.on('click', function(e) {
@@ -211,15 +211,14 @@ GeoPoster.Map = function() {
 	}
 
 	this.updateContent = function(e, params) {
-		console.log(e.data.selectedItem.feature);
 		var item = e.data.selectedItem;
 		item.feature.properties.description = params.newValue;
 		item.content = params.newValue;
-		console.log(item.feature);
 		GeoPoster.conector.update(item.feature);
 	}
 
 	this.saved = function(data) {
+		console.log('saved', data)
 		if (this.selectedItem.feature.properties.id == undefined) {
 			this.selectedItem.feature.properties.id = data.marker_id;
 		}
