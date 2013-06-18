@@ -1,6 +1,5 @@
 Flask==0.9
 GeoAlchemy2==0.2
-GeoPoster==0.1
 Jinja2==2.7
 MarkupSafe==0.18
 SQLAlchemy==0.8.1
