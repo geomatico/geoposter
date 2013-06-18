@@ -3,11 +3,17 @@ html {
 }
 
 body {
+	overflow-x: hidden;
 	height: 95%;
 	padding-bottom: 60px;
 	-webkit-box-sizing: border-box; /* Safari/Chrome, other WebKit */
 	-moz-box-sizing: border-box; /* Firefox, other Gecko */
 	box-sizing: border-box; /* Opera/IE 8+ */
+	background-color: #e7ebf0;
+    font-family: 'PT Sans', Helvetica, Arial, sans-serif;
+	font-size: 14px;
+	color:#555;
+	margin: 0px;
 }
 
 #map {
@@ -53,3 +59,41 @@ body {
 	margin-top: 10px;
 }
 
+.container-fluid {
+	padding-right: 0px;
+	padding-left: 0px;
+}
+.row-fluid .span3 {
+	margin-left: 10px;
+}
+.navbar {
+        margin-bottom: 0px;
+}
+
+.navbar .navbar-inverse {
+        -webkit-border-radius: 0px;
+           -moz-border-radius: 0px;
+                border-radius: 0px;
+}
+
+.navbar-inner {
+        -webkit-border-radius: 0px;
+           -moz-border-radius: 0px;
+                border-radius: 0px;
+        background-color: #f3f5f7;	
+}
+
+.logo {
+	background-color: #f3f5f7;
+}
+
+.ima_logo {
+	margin: 10px;
+}
+
+.btn {
+	    -webkit-border-radius: 0px;
+           -moz-border-radius: 0px;
+                border-radius: 0px;
+        margin: 0px;
+}
