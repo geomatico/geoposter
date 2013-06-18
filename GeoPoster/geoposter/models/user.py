@@ -18,6 +18,18 @@ class User(Base):
     password = Column(String(30), nullable=None)
     markers = relationship("Marker", backref=backref('markers'))
     
+    def is_authenticated(self):
+        return True
+
+    def is_active(self):
+        return True
+
+    def is_anonymous(self):
+        return False
+
+    def get_id(self):
+        return unicode(self.id)
+    
     def __init__(self, name, email, password):
         self.name = name
         self.email = email

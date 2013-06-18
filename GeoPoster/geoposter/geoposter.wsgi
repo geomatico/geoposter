@@ -6,3 +6,4 @@ activate_this = '/home/michogarcia/geomati.co/Besos/dev/venv/bin/activate_this.p
 execfile(activate_this, dict(__file__=activate_this))
 
 from run import app as application
+application.secret_key = 'why would I tell you my secret key?'
