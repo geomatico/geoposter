@@ -6,6 +6,7 @@
     <title>GeoPoster</title>
     <link rel="shortcut icon" href="img/favicon.ico" />
 
+	<link rel="stylesheet" type="text/css" href="css/jquery-ui-1.10.3.custom.min.css" />
     <link rel="stylesheet" type="text/css" href="css/leaflet.css" />
     <link rel="stylesheet" type="text/css" href="bootstrap/css/bootstrap.css" />
     <link rel="stylesheet" type="text/css" href="bootstrap/css/bootstrap-responsive.css" />
@@ -18,6 +19,23 @@
 
 </head>
 <body>
+	
+	<div id="dialog-form">
+		<form class="form-signin">
+				<h3 class="form-signin-heading">Please sign in</h3>
+				<input type="text" name="username" id="username" class="input-block-level" placeholder="Email address">
+				<input type="password" name="password" id="password" class="input-block-level" placeholder="Password">
+				<!--label class="checkbox">
+				<input type="checkbox" value="remember-me"> Remember me
+				</label>
+				<button class="btn btn-large" type="submit">
+					Sign in
+				</button-->
+		</form>
+		<p class="validateTips">All form fields are required.</p>
+	</div>
+
+      
     <div class="container-fluid">
     	<div class="row-fluid logo">
     		<a class="brand" href="#"><img class="ima_logo" src="img/consorci-besos-logo.png" /></a>
@@ -51,6 +69,7 @@
     <footer class="span12"><small>&copy; <a href="http://geomati.co" target="_blank">geomati.co</a> - 2013</small></footer>
     
     <script type="text/javascript" src="js/vendor/jquery-1.9.1.js"></script>
+    <script type="text/javascript" src="js/vendor/jquery-ui-1.10.3.custom.min.js"></script>
     <script type="text/javascript" src="js/vendor/leaflet.js"></script>
     <script type="text/javascript" src="bootstrap/js/bootstrap.js"></script>
     <script type="text/javascript" src="bootstrap-editable/js/bootstrap-editable.min.js"></script>

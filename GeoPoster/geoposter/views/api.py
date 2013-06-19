@@ -13,6 +13,27 @@ from sqlalchemy.sql import and_
 
 api = Blueprint('api', __name__, url_prefix='/geoposter')
 
+def check_login(username, password):
+    user = g.db.query(User).filter(and_(User.name==username, User.password==password)).first()
+    if (user != None):
+        return True
+    else:
+        return False
+
+def authenticate():
+    return Response(
+    'Could not verify your access level for that URL.\n'
+    'You have to login with proper credentials', 401)
+
+def requires_login(f):
+    @wraps(f)
+    def decorated(*args, **kwargs):
+        auth = request.authorization
+        if not auth or not check_login(auth.username, auth.password):
+            return authenticate()
+        return f(*args, **kwargs)
+    return decorated
+ 
 @api.before_request
 def before_request():
     session = sessionmaker(bind=engine)
@@ -25,15 +46,10 @@ def teardown_request(exception):
         db.close()
 
 @api.route('/login', methods=['GET', 'POST'])
+@requires_login
 def login():
-    username = request.form['username']
-    password = request.form['password']
-    user = g.db.query(User).filter(and_(User.name==username, User.password==password)).first()
-    if (user != None):
-        g.user = user
-        return redirect(url_for('static', filename='../map/'))
-    else:
-        return redirect(url_for('static', filename='../map/login.html'))
+    return 'epa'
+    
     
 @api.route('/')
 def home():

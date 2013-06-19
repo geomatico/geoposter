@@ -96,8 +96,6 @@ GeoPoster.Map = function() {
 			"Midnight" : midnight
 		}).addTo(this.map);
 
-		GeoPoster.conector.load();
-
 		$('#title').editable({
 			mode : 'popup',
 			placement : 'left',
