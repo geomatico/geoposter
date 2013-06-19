@@ -125,6 +125,10 @@ body {
         margin: 0px;
 }
 
+#dialog-form {
+	display: none;
+}
+
 .icon-info {
 	margin: 2px;
 }
