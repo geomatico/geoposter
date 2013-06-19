@@ -48,7 +48,7 @@ def teardown_request(exception):
 @api.route('/login', methods=['GET', 'POST'])
 @requires_login
 def login():
-    return 'epa'
+    return jsonify(success =True)
     
     
 @api.route('/')
@@ -56,6 +56,7 @@ def home():
     return redirect(url_for('static', filename='index.html'))
 
 @api.route('/marker', methods=['GET'])
+@requires_login
 def getMarkers():
     
     sql = "SELECT marker.fid AS marker_fid, marker.id AS marker_id, marker.title AS marker_title\
@@ -69,6 +70,7 @@ def getMarkers():
     return jsonify(type ='FeatureCollection', features = markersJSON)
 
 @api.route('/marker', methods=['POST'])
+@requires_login
 def insertMarker():
     
     markerAsJSON = json.loads(request.data)
@@ -86,6 +88,7 @@ def insertMarker():
         return jsonify(success=True, marker_id=marker.id)
 
 @api.route('/marker/<marker_id>', methods=['GET'])
+@requires_login
 def getMarker(marker_id):
     
     sql = "SELECT marker.fid AS marker_fid, marker.id AS marker_id, marker.title AS marker_title\
@@ -100,6 +103,7 @@ def getMarker(marker_id):
         return jsonify(marker.AsGeoJSON)
     
 @api.route('/marker/<marker_id>', methods=['PUT'])
+@requires_login
 def updateMarker(marker_id):
     
     marker = Marker(json.loads(request.data))
@@ -109,6 +113,7 @@ def updateMarker(marker_id):
     return jsonify(success = True)
     
 @api.route('/marker/<marker_id>', methods=['DELETE'])
+@requires_login
 def deleteMarker(marker_id):
     
     marker = g.db.query(Marker).filter_by(id=marker_id).first()

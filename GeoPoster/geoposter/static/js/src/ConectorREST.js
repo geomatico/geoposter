@@ -6,6 +6,9 @@ var ConectorREST =  function(URL) {
 		$.ajax({
 			url: this.URL + '/marker',
 			dataType : 'json',
+			beforeSend: function (xhr){ 
+					        xhr.setRequestHeader('Authorization', GeoPoster.auth); 
+			},
 			success : function(data, status) {
 				GeoPoster.map.load(data);
 			}
@@ -21,6 +24,9 @@ var ConectorREST =  function(URL) {
 			dataType : 'json',
 			headers : {
 				'Content-Type' : 'application/json; charset=UTF-8'
+			},
+			beforeSend: function (xhr){ 
+					        xhr.setRequestHeader('Authorization', GeoPoster.auth); 
 			},
 			success : function(data, status) {
 				GeoPoster.map.saved(data);
@@ -41,6 +47,9 @@ var ConectorREST =  function(URL) {
 			headers : {
 				'Content-Type' : 'application/json; charset=UTF-8'
 			},
+			beforeSend: function (xhr){ 
+					        xhr.setRequestHeader('Authorization', GeoPoster.auth); 
+			},
 			success : function(data, status) {
 				GeoPoster.map.updated(data);
 			},
@@ -58,6 +67,9 @@ var ConectorREST =  function(URL) {
 			dataType : 'json',
 			headers : {
 				'Content-Type' : 'application/json; charset=UTF-8'
+			},
+			beforeSend: function (xhr){ 
+					        xhr.setRequestHeader('Authorization', GeoPoster.auth); 
 			},
 			success : function(data, status) {
 				GeoPoster.map.deleted(data);

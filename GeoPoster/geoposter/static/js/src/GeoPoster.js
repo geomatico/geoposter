@@ -29,5 +29,10 @@ var GeoPoster = {
 	IConector : new IConector('IConector', ['save', 
 											'load',
 											'update',
-											'remove'])
+											'remove']),
+											
+	/**
+	 * 
+	 */
+	auth : null
 }

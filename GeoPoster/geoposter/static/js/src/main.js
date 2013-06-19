@@ -83,7 +83,8 @@ $(document).ready(function() {
 						beforeSend: function (xhr){ 
 					        xhr.setRequestHeader('Authorization', make_base_auth(name.val(), password.val())); 
 					    },
-					    success : function(data, status) {
+					    success : function(data, status) {					    	
+					    	GeoPoster.auth = make_base_auth(name.val(), password.val())
 					    	GeoPoster.conector.load();
 					    	$("#dialog-form").dialog("close");
 					    },
