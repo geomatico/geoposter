@@ -173,6 +173,7 @@ GeoPoster.Map = function() {
 					GeoPoster.conector.remove(this_.selectedItem.feature.properties.id)
 					this_.map.removeLayer(this_.selectedItem);
 					this_.selectedItem = null;
+					$("#info").hide();
 				}
 			}
 		})
