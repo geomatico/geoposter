@@ -140,3 +140,12 @@ body {
 .confirm-dialog {
 	display: none;
 }
+
+.leaflet-control-layers {
+	box-shadow: 0 0 0;
+}
+
+.leaflet-bar {
+	box-shadow: 0 0 0;
+	border: 0px;
+}
