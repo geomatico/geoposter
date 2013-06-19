@@ -177,6 +177,34 @@ GeoPoster.Map = function() {
 				}
 			}
 		})
+		
+		var confirm_buttons = {
+			'Delete!' : function() {
+				console.log($(this));
+			}
+		}	
+
+		$('#btn-delete').on('click', null, this, function(e) {
+			var this_ = e.data;
+			$('#confirm-delete-dialog').dialog({
+				resizable : false,
+				modal : true,
+				buttons : {
+					"Delete!" : function(e) {
+						GeoPoster.conector.remove(this_.selectedItem.feature.properties.id)
+						$(this).dialog("close"); 
+					},
+					Cancel : function(e) {
+						$(this).dialog("close");
+					}
+				}
+			});
+		}); 
+
+	}
+	
+	this.deleteMarker = function(marker_id) {
+
 	}
 	
 	this.selectItem = function(item) {
@@ -228,6 +256,9 @@ GeoPoster.Map = function() {
 	}
 	
 	this.deleted = function(data) {
+		this.map.removeLayer(this.selectedItem);
+		this.selectedItem = null;
+		$("#info").hide();
 		console.log('deleted', data);
 	}
 }

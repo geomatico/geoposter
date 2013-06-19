@@ -74,7 +74,7 @@ body {
 	border-radius: 0 4px 0 4px;
 	bottom: -3px;
 	color: #9DA0A4;
-	content: "Editable!";
+	/*content: "Editable!";*/
 	font-size: 12px;
 	font-weight: bold;
 	left: -5px;
@@ -123,4 +123,16 @@ body {
            -moz-border-radius: 0px;
                 border-radius: 0px;
         margin: 0px;
+}
+
+.icon-info {
+	margin: 2px;
+}
+
+#btn-delete {
+	float: right;
+}
+
+.confirm-dialog {
+	display: none;
 }
