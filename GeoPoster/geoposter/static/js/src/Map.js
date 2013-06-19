@@ -169,7 +169,7 @@ GeoPoster.Map = function() {
 
 		$('#map').on('keydown', null, this, function(e) {
 			var this_ = e.data;
-			var keycode = (event.keyCode ? event.keyCode : event.which);
+			var keycode = (e.keyCode ? e.keyCode : e.which);
 			if (keycode == 46 || keycode == 8) {
 				if (this_.selectedItem != null) {
 					GeoPoster.conector.remove(this_.selectedItem.feature.properties.id)
