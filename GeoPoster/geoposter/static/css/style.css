@@ -133,10 +133,6 @@ body {
 	margin: 2px;
 }
 
-#btn-delete {
-	float: right;
-}
-
 .confirm-dialog {
 	display: none;
 }
