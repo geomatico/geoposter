@@ -170,41 +170,36 @@ GeoPoster.Map = function() {
 			var keycode = (e.keyCode ? e.keyCode : e.which);
 			if (keycode == 46 || keycode == 8) {
 				if (this_.selectedItem != null) {
-					GeoPoster.conector.remove(this_.selectedItem.feature.properties.id)
-					this_.map.removeLayer(this_.selectedItem);
-					this_.selectedItem = null;
-					$("#info").hide();
+					$('#delete-marker').hide();
+					$('#confirm-delete').show();				
 				}
 			}
 		})
-		
-		var confirm_buttons = {
-			'Delete!' : function() {
-				console.log($(this));
-			}
-		}	
 
 		$('#btn-delete').on('click', null, this, function(e) {
 			var this_ = e.data;
-			$('#confirm-delete-dialog').dialog({
-				resizable : false,
-				modal : true,
-				buttons : {
-					"Delete!" : function(e) {
-						GeoPoster.conector.remove(this_.selectedItem.feature.properties.id)
-						$(this).dialog("close"); 
-					},
-					Cancel : function(e) {
-						$(this).dialog("close");
-					}
-				}
-			});
+			$('#delete-marker').hide();
+			$('#confirm-delete').show();
+		});
+		
+		$('#btn-delete-sure').on('click', null, this, function(e) {
+			var this_ = e.data;
+			this_.deleteMarker();
 		}); 
+		
+		$('#btn-delete-cancel').on('click', null, this, function(e) {
+			$('#delete-marker').show();
+			$('#confirm-delete').hide();
+		});  
 
 	}
 	
-	this.deleteMarker = function(marker_id) {
-
+	this.deleteMarker = function() {
+		GeoPoster.conector.remove(this.selectedItem.feature.properties.id)
+		this.map.removeLayer(this.selectedItem);
+		this.selectedItem = null;
+		$("#info").hide();
+		$('#confirm-delete').hide();
 	}
 	
 	this.selectItem = function(item) {
@@ -219,6 +214,7 @@ GeoPoster.Map = function() {
 		this.selectedItem.dragging.enable();
 
 		$("#info").show();
+		$('#delete-marker').show();
 		$("#title").editable('setValue', item.title);
 		$("#content").editable('setValue', item.content);
 	}

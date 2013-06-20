@@ -129,12 +129,13 @@ body {
 	display: none;
 }
 
-.icon-info {
-	margin: 2px;
+#confirm-delete {
+	display: none;
 }
 
-.confirm-dialog {
-	display: none;
+.icons-info {
+	margin: 2px;
+	text-align: right;
 }
 
 .leaflet-control-layers {

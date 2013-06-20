@@ -63,17 +63,20 @@
                     <h3 id="title" data-type="text" data-original-title="Títol">Títol...</h3>
                     <div id="content" data-type="wysihtml5" data-original-title="Continguts">Continguts...</div>
                     <div class="icons-info">
-                    	<button id="btn-delete" class="btn btn-mini"><i  class="icon-trash"></i></button>
+                    	<div id="delete-marker">
+                     		<button id="btn-delete" class="btn btn-mini"><i  class="icon-trash"></i></button>                   		
+                    	</div>
+                    	<div id="confirm-delete">
+	                    	<button id="btn-delete-sure" class="btn btn-mini"><i  class="icon-trash"></i></button> 
+	                     	<button id="btn-delete-cancel" class="btn btn-mini"><i  class="icon-remove"></i></button>                  		
+                    	</div>
+
                     </div>
                 </div>
             </div> <!-- span3 -->
         </div> <!-- row-fluid -->
     </div> <!-- container-fluid -->
-    
-    <div id="confirm-delete-dialog" class="confirm-dialog">
-    	<p><i class="icon-warning-sign"></i>These items will be permanently deleted and cannot be recovered. Are you sure?</p>
-    </div>
-    
+
     <footer class="span12"><small>&copy; <a href="http://geomati.co" target="_blank">geomati.co</a> - 2013</small></footer>
     
     <script type="text/javascript" src="js/vendor/jquery-1.9.1.js"></script>
