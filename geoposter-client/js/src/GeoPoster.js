@@ -18,6 +18,11 @@ var GeoPoster = {
 	/**
 	 * 
 	 */
+	URLAPI : 'http://localhost:5000/geoposter',
+	
+	/**
+	 * 
+	 */
 	setConector : function(conector) {
 		IConector.ensureImplements(conector, this.IConector)
 		this.conector = conector;

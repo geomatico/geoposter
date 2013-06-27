@@ -16,7 +16,7 @@
  */
 
 $(document).ready(function() {
-	GeoPoster.setConector(new ConectorREST('http://localhost:5000/geoposter'));
+	GeoPoster.setConector(new ConectorREST(GeoPoster.URLAPI));
 	GeoPoster.map = new GeoPoster.Map();
 	GeoPoster.map.init();
 
@@ -78,7 +78,7 @@ $(document).ready(function() {
 
 				if (bValid) {
 					$.ajax({
-						url: '../geoposter/login',
+						url: GeoPoster.URLAPI + '/login',
 						type : 'POST',
 						beforeSend: function (xhr){ 
 					        xhr.setRequestHeader('Authorization', make_base_auth(name.val(), password.val())); 
