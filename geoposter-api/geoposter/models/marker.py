@@ -1,6 +1,6 @@
 import uuid
 
-from sqlalchemy import ForeignKey, Column, String, Integer
+from sqlalchemy import ForeignKey, Column, String, Text, Integer
 from geoalchemy2 import Geometry
 from database import Base
 from flask import json
@@ -17,7 +17,7 @@ class Marker(Base):
     fid = Column(Integer, primary_key=True, autoincrement=True)
     id = Column(String(40), nullable=False)
     title = Column(String(30), nullable=False)
-    description = Column(String(254))
+    description = Column(Text)
     geom = Column(Geometry(geometry_type=TYPE, srid=SRID))
     user_id = Column(Integer, ForeignKey('user.id'))
     
