@@ -215,6 +215,7 @@ GeoPoster.Map = function() {
 
 		$("#info").show();
 		$('#delete-marker').show();
+		$('#confirm-delete').hide();
 		$("#title").editable('setValue', item.title);
 		$("#content").editable('setValue', item.content);
 	}
