@@ -3,7 +3,7 @@ Created on 11/06/2013
 
 @author: michogarcia
 '''
-from flask import Blueprint, request, g, jsonify, json, redirect, url_for, Response
+from flask import Blueprint, request, g, jsonify, json, redirect, url_for, Response, abort
 from functools import wraps
 from models.user import User
 from models.marker import Marker
@@ -11,6 +11,16 @@ from database import engine
 from sqlalchemy.orm import sessionmaker
 from sqlalchemy.sql import and_
 
+class MarkerException():
+    
+    message = None
+
+    def __init__(self, message):
+        self.message = message
+        
+    def __repr__(self):
+        return self.message
+    
 api = Blueprint('api', __name__, url_prefix='/geoposter')
 
 def check_login(username, password):
@@ -59,16 +69,19 @@ def home():
 @requires_login
 def getMarkers():
     
-    sql = "SELECT marker.fid AS marker_fid, marker.id AS marker_id, marker.title AS marker_title\
-            , marker.description AS marker_description, ST_AsGeoJSON(marker.geom)\
-             AS marker_geom, marker.user_id AS marker_user_id FROM marker"  
-    markers = g.db.query(Marker).from_statement(sql).all()
-    markersJSON = list()
-    for marker in markers:
-        markersJSON.append(marker.AsGeoJSON)
-
-    return jsonify(type ='FeatureCollection', features = markersJSON)
-
+    try:
+        sql = "SELECT marker.fid AS marker_fid, marker.id AS marker_id, marker.title AS marker_title\
+                , marker.description AS marker_description, ST_AsGeoJSON(marker.geom)\
+                 AS marker_geom, marker.user_id AS marker_user_id FROM marker"  
+        markers = g.db.query(Marker).from_statement(sql).all()
+        markersJSON = list()
+        for marker in markers:
+            markersJSON.append(marker.AsGeoJSON)
+        
+        return jsonify(type ='FeatureCollection', features = markersJSON)
+    except:
+        return Response('Some problem occured on server, please try in few moments!', 500)
+    
 @api.route('/marker', methods=['POST'])
 @requires_login
 def insertMarker():
@@ -91,16 +104,24 @@ def insertMarker():
 @requires_login
 def getMarker(marker_id):
     
-    sql = "SELECT marker.fid AS marker_fid, marker.id AS marker_id, marker.title AS marker_title\
-            , marker.description AS marker_description, ST_AsGeoJSON(marker.geom)\
-             AS marker_geom, marker.user_id AS marker_user_id FROM marker where marker.id = '" + marker_id + "'"
-    marker = g.db.query(Marker).from_statement(sql).first()
-    #marker = g.db.query(Marker).filter_by(id=marker_id).first()
-    
-    if (marker == None):
-        return jsonify(success = False)
-    else:
+    try:
+        sql = "SELECT marker.fid AS marker_fid, marker.id AS marker_id, marker.title AS marker_title\
+                , marker.description AS marker_description, ST_AsGeoJSON(marker.geom)\
+                 AS marker_geom, marker.user_id AS marker_user_id FROM marker where marker.id = '" + marker_id + "'"
+        marker = g.db.query(Marker).from_statement(sql).first()
+        #marker = g.db.query(Marker).filter_by(id=marker_id).first()
+        
+        if (marker == None):
+            print('raise')
+            raise MarkerException('Marker not Found!')
+        
         return jsonify(marker.AsGeoJSON)
+    
+    except MarkerException as markerException:
+        return Response(str(markerException),500)
+    except Exception as exception:
+        return Response(str(exception),500)
+        
     
 @api.route('/marker/<marker_id>', methods=['PUT'])
 @requires_login
