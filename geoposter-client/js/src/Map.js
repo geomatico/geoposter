@@ -26,7 +26,25 @@ GeoPoster.Map = function() {
 	
 	this.map = null;
 	
-	this.selectedItem = null;
+	this.selectedItem = null;	
+	this.lastStatus = null;
+	
+	/**
+	 * 
+	 */
+	this.setSelectedItem = function(item) {
+		if (item == null) {
+			this.selectedItem = null;			
+			this.lastStatus = null;			
+		} else {
+			this.selectedItem = item;			
+			this.lastStatus = {
+				latlng : item.getLatLng(),
+				content : item.content,
+				title : item.title 
+			};			
+		}
+	}
 	
 	/**
 	 * 
@@ -203,7 +221,7 @@ GeoPoster.Map = function() {
 	this.deleteMarker = function() {
 		GeoPoster.conector.remove(this.selectedItem.feature.properties.id)
 		this.map.removeLayer(this.selectedItem);
-		this.selectedItem = null;
+		this.setSelectedItem(null);
 		$("#info").hide();
 		$('#confirm-delete').hide();
 	}
@@ -214,7 +232,7 @@ GeoPoster.Map = function() {
 			$(this.selectedItem._icon).removeClass("leaflet-marker-selected");
 			this.selectedItem._icon.src = this.DEFAULTICON.options.iconUrl;
 		}
-		this.selectedItem = item;
+		this.setSelectedItem(item);
 		$(this.selectedItem._icon).addClass("leaflet-marker-selected");
 		this.selectedItem._icon.src = this.SELECTEDICON.options.iconUrl;
 		this.selectedItem.dragging.enable();
@@ -237,7 +255,6 @@ GeoPoster.Map = function() {
 		item.title = params.newValue;
 		item._icon.title = params.newValue;
 		GeoPoster.conector.update(item.feature);
-		// Ugly, but no accessor method
 	}
 
 	this.updateContent = function(e, params) {
@@ -261,12 +278,27 @@ GeoPoster.Map = function() {
 	}
 	
 	this.updated = function(data, status) {
-		console.log('updated', data);
+		if (status == 'success') {
+			this.showAlert(this.SUCCESS, 'Marker Updated!');
+		} else {
+			this.map.removeLayer(this.selectedItem);
+			this.selectedItem.setLatLng(this.lastStatus.latlng);
+			this.selectedItem.content = this.lastStatus.content;
+			this.selectedItem.title = this.lastStatus.title
+			this.selectedItem.feature.properties.content = this.lastStatus.content;
+			this.selectedItem.feature.properties.title = this.lastStatus.title;
+			this.selectedItem.feature.geometry.coordinates = [this.lastStatus.latlng.lng, this.lastStatus.latlng.lat];
+			$("#title").editable('setValue', this.lastStatus.title);
+			$("#content").editable('setValue', this.lastStatus.content);
+			this.selectedItem.addTo(this.map);
+			this.selectItem(this.selectedItem);
+			this.showAlert(this.ERROR, 'Marker not updated!');
+		}
 	}
 	
 	this.deleted = function(data, status) {
 		this.map.removeLayer(this.selectedItem);
-		this.selectedItem = null;
+		this.setSelectedItem(null);;
 		$("#info").hide();
 		console.log('deleted', data);
 	}
