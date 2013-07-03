@@ -213,9 +213,6 @@ GeoPoster.Map = function() {
 			$('#delete-marker').show();
 			$('#confirm-delete').hide();
 		});
-		
-		$('#alert-dialog').hide();
-
 	}
 	
 	this.deleteMarker = function() {
@@ -305,11 +302,9 @@ GeoPoster.Map = function() {
 	}
 	
 	this.showAlert = function(type, message) {
-		$('#alert-dialog').removeClass(this.ERROR.type).removeClass(this.SUCCESS.type).removeClass(this.INFO.type);
-		$('#alert-dialog').addClass(type.type);
+		$('#alert-dialog').removeClass(this.ERROR.type).removeClass(this.SUCCESS.type).removeClass(this.INFO.type).addClass(type.type);
 		$('#alert-title').text(type.title);
 		$('#alert-text').text(message);
-		$('#alert-dialog').fadeIn(500);
-		$('#alert-dialog').fadeOut(500);
+		$('#alert-dialog').fadeIn(500).fadeOut(500);
 	}
 }
