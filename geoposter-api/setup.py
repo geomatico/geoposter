@@ -8,5 +8,6 @@ setup(
       author_email='info@geomati.co',
       url='http://geoposter.com',
       license = "Thinking about it",
-      packages=find_packages()
+      packages=find_packages(),
+      include_package_data = True
 )
