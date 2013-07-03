@@ -18,7 +18,7 @@ var GeoPoster = {
 	/**
 	 * 
 	 */
-	URLAPI : 'http://localhost:5000/geoposter',
+	URLAPI : 'http://localhost/geoposter/geoposter',
 	
 	/**
 	 * 

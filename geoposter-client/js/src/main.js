@@ -89,8 +89,7 @@ $(document).ready(function() {
 					    	$("#dialog-form").dialog("close");
 					    },
 					    error : function(data, status) {
-					    	if (data.status == 401) 
-					    		updateTips(data.statusText);
+					    	updateTips(data.statusText.toUpperCase());
 					    }
 					})
 				}

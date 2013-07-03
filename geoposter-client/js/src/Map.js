@@ -8,6 +8,10 @@
  */
 GeoPoster.Map = function() {
 	
+	this.ERROR = {type : 'alert-error', title : 'Error'};
+	this.SUCCESS = {type : 'alert-success', title : 'Success'};
+	this.INFO = {type : 'alert-info', title : 'Information'};;
+	
 	this.DEFAULTICON = L.icon({
 						iconUrl : 'map-icons/pins/48/pin2.png',
 						iconSize : [48, 48],
@@ -32,7 +36,7 @@ GeoPoster.Map = function() {
 		GeoPoster.conector.save(markerAsJSON);	
 	};
 	
-	this.load = function(data) {
+	this.load = function(data, status) {
 
 		L.geoJson(data, {
 			context: this, 
@@ -190,7 +194,9 @@ GeoPoster.Map = function() {
 		$('#btn-delete-cancel').on('click', null, this, function(e) {
 			$('#delete-marker').show();
 			$('#confirm-delete').hide();
-		});  
+		});
+		
+		$('#alert-dialog').hide();
 
 	}
 	
@@ -241,21 +247,35 @@ GeoPoster.Map = function() {
 		GeoPoster.conector.update(item.feature);
 	}
 
-	this.saved = function(data) {
-		console.log('saved', data)
-		if (this.selectedItem.feature.properties.id == undefined) {
-			this.selectedItem.feature.properties.id = data.marker_id;
+	this.saved = function(data, status) {
+		if (status == 'success') {
+			if (this.selectedItem.feature.properties.id == undefined) {
+				this.selectedItem.feature.properties.id = data.marker_id;
+			}
+			this.showAlert(this.SUCCESS, 'Marker saved!');
+		} else {
+			this.showAlert(this.ERROR, 'Marker not saved!');
+			this.map.removeLayer(this.selectedItem);
+			this.selectedItem = null;
 		}
 	}
 	
-	this.updated = function(data) {
+	this.updated = function(data, status) {
 		console.log('updated', data);
 	}
 	
-	this.deleted = function(data) {
+	this.deleted = function(data, status) {
 		this.map.removeLayer(this.selectedItem);
 		this.selectedItem = null;
 		$("#info").hide();
 		console.log('deleted', data);
+	}
+	
+	this.showAlert = function(type, message) {
+		$('#alert-dialog').addClass(type.type);
+		$('#alert-title').text(type.title);
+		$('#alert-text').text(message);
+		$('#alert-dialog').fadeIn(500);
+		$('#alert-dialog').fadeOut(500);
 	}
 }

@@ -146,3 +146,10 @@ body {
 	box-shadow: 0 0 0;
 	border: 0px;
 }
+
+#alert-dialog {
+	position: absolute;
+	z-index: 100;
+	margin-top: 5px;
+	text-align: center;
+}
