@@ -305,6 +305,7 @@ GeoPoster.Map = function() {
 	}
 	
 	this.showAlert = function(type, message) {
+		$('#alert-dialog').removeClass(this.ERROR.type).removeClass(this.SUCCESS.type).removeClass(this.INFO.type);
 		$('#alert-dialog').addClass(type.type);
 		$('#alert-title').text(type.title);
 		$('#alert-text').text(message);
