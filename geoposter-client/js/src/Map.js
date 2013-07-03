@@ -220,10 +220,6 @@ GeoPoster.Map = function() {
 	
 	this.deleteMarker = function() {
 		GeoPoster.conector.remove(this.selectedItem.feature.properties.id)
-		this.map.removeLayer(this.selectedItem);
-		this.setSelectedItem(null);
-		$("#info").hide();
-		$('#confirm-delete').hide();
 	}
 	
 	this.selectItem = function(item) {
@@ -297,10 +293,15 @@ GeoPoster.Map = function() {
 	}
 	
 	this.deleted = function(data, status) {
-		this.map.removeLayer(this.selectedItem);
-		this.setSelectedItem(null);;
-		$("#info").hide();
-		console.log('deleted', data);
+		if (status == 'success') {
+			this.showAlert(this.SUCCESS, 'Marker Deleted!');
+			this.map.removeLayer(this.selectedItem);
+			this.setSelectedItem(null);;
+			$("#info").hide();
+			$('#confirm-delete').hide();
+		} else {
+			this.showAlert(this.ERROR, 'Marker not deleted!');
+		}
 	}
 	
 	this.showAlert = function(type, message) {
