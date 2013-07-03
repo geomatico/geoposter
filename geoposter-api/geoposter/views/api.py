@@ -112,7 +112,6 @@ def getMarker(marker_id):
         #marker = g.db.query(Marker).filter_by(id=marker_id).first()
         
         if (marker == None):
-            print('raise')
             raise MarkerException('Marker not Found!')
         
         return jsonify(marker.AsGeoJSON)
@@ -127,11 +126,24 @@ def getMarker(marker_id):
 @requires_login
 def updateMarker(marker_id):
     
-    marker = Marker(json.loads(request.data))
-    g.db.query(Marker).filter_by(id=marker_id).update({'title' : marker.title, 'description' : marker.description, 'geom' : marker.geom})
-    g.db.commit()
+    try:
+        marker = Marker(json.loads(request.data))
+        g.db.query(Marker).filter_by(id=marker_id).update({'title' : marker.title, 'description' : marker.description, 'geom' : marker.geom})
+        g.db.commit()
+        
+        markerupdated = g.db.query(Marker).filter_by(id=marker.id).first()
+        
+        if (markerupdated == None):
+            raise MarkerException('Marker not updated!')
+        else:
+            return jsonify(success=True, marker_id=markerupdated.AsGeoJSON)
+        
+    except MarkerException as markerException:
+        return Response(str(markerException),500)        
+    except Exception as exception:
+        return Response(str(exception),500)
     
-    return jsonify(success = True)
+    
     
 @api.route('/marker/<marker_id>', methods=['DELETE'])
 @requires_login
