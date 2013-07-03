@@ -114,7 +114,7 @@ def getMarker(marker_id):
         if (marker == None):
             raise MarkerException('Marker not Found!')
         
-        return jsonify(marker.AsGeoJSON)
+        return jsonify(success=True, marker=marker.AsGeoJSON)
     
     except MarkerException as markerException:
         return Response(str(markerException),500)
@@ -128,15 +128,13 @@ def updateMarker(marker_id):
     
     try:
         marker = Marker(json.loads(request.data))
-        g.db.query(Marker).filter_by(id=marker_id).update({'title' : marker.title, 'description' : marker.description, 'geom' : marker.geom})
+        updated = g.db.query(Marker).filter_by(id=marker_id).update({'title' : marker.title, 'description' : marker.description, 'geom' : marker.geom})
         g.db.commit()
-        
-        markerupdated = g.db.query(Marker).filter_by(id=marker.id).first()
-        
-        if (markerupdated == None):
+
+        if (updated == 0):
             raise MarkerException('Marker not updated!')
-        else:
-            return jsonify(success=True, marker_id=markerupdated.AsGeoJSON)
+
+        return jsonify(success=True)
         
     except MarkerException as markerException:
         return Response(str(markerException),500)        
@@ -149,10 +147,22 @@ def updateMarker(marker_id):
 @requires_login
 def deleteMarker(marker_id):
     
-    marker = g.db.query(Marker).filter_by(id=marker_id).first()
-    g.db.delete(marker);
-    g.db.commit()
+    try:
+        marker = g.db.query(Marker).filter_by(id=marker_id).first()
+        g.db.delete(marker);
+        g.db.commit()
+
+        markerdeleted = g.db.query(Marker).filter_by(id=marker.id).first()
     
-    return jsonify(success = True)
+        if (markerdeleted != None):
+            raise MarkerException('Marker not deleted!')
+        
+        return jsonify(success = True)
+    
+    except MarkerException as markerException:
+        return Response(str(markerException),500)        
+    except Exception as exception:
+        return Response(str(exception),500)
+        
     
 
