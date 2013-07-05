@@ -55,6 +55,8 @@ GeoPoster.Map = function() {
 	};
 	
 	this.load = function(data, status) {
+		
+		var initBounds = new L.LatLngBounds();
 
 		L.geoJson(data, {
 			context: this, 
@@ -82,9 +84,12 @@ GeoPoster.Map = function() {
 					marker.on('dragend', function(e) {
 						this.context.updateFeatureLocation(e.target);
 					}, this);
+					initBounds.extend(marker.getLatLng());
 				}
 			}
-		}).addTo(this.map); 
+		}).addTo(this.map);
+		
+		this.map.fitBounds(initBounds);
 	}
 	
 	this.init = function(div) {
@@ -104,6 +109,17 @@ GeoPoster.Map = function() {
 			styleId : 999,
 			attribution : cloudmadeAttribution
 		});
+		
+		L.Map.include({'getMarkersBound' : function() {
+									var bounds = new L.LatLngBounds();
+									for (var i in this._layers) {							
+										var layer = this._layers[i];
+										if (layer instanceof L.Marker)
+											bounds.extend(layer.getLatLng());
+									}
+
+									return bounds;
+						}});
 
 		this.map = L.map('map', {
 			center : [41.437514611861786, 2.206707000732422],
