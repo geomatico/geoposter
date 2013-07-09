@@ -283,6 +283,8 @@ GeoPoster.Map = function() {
 			this.showAlert(this.ERROR, 'Marker not saved!');
 			this.map.removeLayer(this.selectedItem);
 			this.selectedItem = null;
+			$("#info").hide();
+			$('#confirm-delete').hide();			
 		}
 	}
 	
