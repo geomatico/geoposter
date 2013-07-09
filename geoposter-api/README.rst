@@ -26,7 +26,7 @@ If you are a ninja developer in Python you will haven't any problem to install i
 
 1. First, download it from our dist repository!.
 2. Unpack it into your preferred folder.
-3. Go to this folder an typed ``'python setup.py install'`` (without quotes), this will download all the necessary libraries to run the GeoPoster API REST in your server.
+3. Go to this folder an typed ``'pip install -r requeriments.txt'`` (without quotes), this will download all the necessary libraries to run the GeoPoster API REST in your server.
 
 Now you will need to serve all API operations on the web. You can do this in several ways, one of them is using an Apache HTTP Sever. We understand that you have now an Apache HTTP Server running in your server, if this is not correct, you must to install and run it as fast as possible!. After this, you will need connect the HTTP Server with the GeoPoster API. To do this we will use WSGI (Web Server Gateway Interface). Ok, we know it, looks horrible, but we have here a very good instructions to do this very simple, remember, KISS!. You only will need to do some modifications into your Apache HTTP Server configuration file:
 
@@ -100,5 +100,9 @@ To start to develope on the GeoPoster API REST project:
     USER = "username"
     PASSWORD = "password"
 
+Roadmap
+=======
+
+* Add user management
 	
 
