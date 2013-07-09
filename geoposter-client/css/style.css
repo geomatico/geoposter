@@ -154,3 +154,21 @@ body {
 	margin-top: 5px;
 	text-align: center;
 }
+
+.leaflet-control-layers {
+	    -webkit-border-radius: 0px;
+           -moz-border-radius: 0px;
+                border-radius: 0px;	
+}
+
+.leaflet-bar-part-top {
+	    -webkit-border-radius: 0px;
+           -moz-border-radius: 0px;
+                border-radius: 0px;		
+}
+
+.leaflet-bar-part-bottom {
+	    -webkit-border-radius: 0px;
+           -moz-border-radius: 0px;
+                border-radius: 0px;		
+}
