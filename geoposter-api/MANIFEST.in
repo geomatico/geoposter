@@ -1,2 +1,2 @@
-include *.txt *.md geoposter/geoposter.wsgi
+include *.txt *.rst geoposter/geoposter.wsgi
 recursive-include *.txt
