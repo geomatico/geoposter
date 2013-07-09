@@ -7,7 +7,7 @@ setup(
       author='geomati.co',
       author_email='info@geomati.co',
       url='http://geoposter.com',
-      license = "Thinking about it",
+      license = "BSD License",
       packages=find_packages(),
       include_package_data = True
 )
