@@ -110,12 +110,15 @@ body {
         background-color: #f3f5f7;	
 }
 
-.logo {
-	background-color: #f3f5f7;
+#logo {
+	margin: 10px;
+	background-image: url("../img/consorci-besos-logo.png");
+	background-repeat: no-repeat;
+	height: 53px;
 }
 
-.ima_logo {
-	margin: 10px;
+.logo {
+	background-color: #f3f5f7;
 }
 
 .btn {
