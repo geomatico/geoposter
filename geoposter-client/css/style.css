@@ -9,7 +9,7 @@ body {
 	-webkit-box-sizing: border-box; /* Safari/Chrome, other WebKit */
 	-moz-box-sizing: border-box; /* Firefox, other Gecko */
 	box-sizing: border-box; /* Opera/IE 8+ */
-	background-color: #e7ebf0;
+	background-color: #F2F2F2;
     font-family: 'PT Sans', Helvetica, Arial, sans-serif;
 	font-size: 14px;
 	color:#555;
@@ -29,7 +29,7 @@ body {
 }
 
 .ui-dialog{
-	background-color: #e7ebf0;
+	background-color: #FAFAFA;
 
 }
 
@@ -45,7 +45,7 @@ body {
 }
 
 .ui-widget-overlay {
-	background-color: #6697a4;
+	background-color: #BDBDBD;
 	opacity: 0.8;
 	z-index: 2000;
 }
@@ -70,7 +70,7 @@ body {
 }
 
 .thumbnail.editable:after {
-	background-color: #F5F5F5;
+	background-color: #FAFAFA;
 	border-radius: 0 4px 0 4px;
 	bottom: -3px;
 	color: #9DA0A4;
@@ -84,6 +84,7 @@ body {
 
 .thumbnail.editable {
 	margin-top: 10px;
+	background-color: #FAFAFA;
 }
 
 .container-fluid {
@@ -107,11 +108,11 @@ body {
         -webkit-border-radius: 0px;
            -moz-border-radius: 0px;
                 border-radius: 0px;
-        background-color: #f3f5f7;	
+        background-color: #F2F2F2;	
 }
 
 .logo {
-	background-color: #f3f5f7;
+	background-color: #F2F2F2;
 }
 
 .ima_logo {

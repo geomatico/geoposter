@@ -13,13 +13,13 @@ GeoPoster.Map = function() {
 	this.INFO = {type : 'alert-info', title : 'Information'};;
 	
 	this.DEFAULTICON = L.icon({
-						iconUrl : 'map-icons/pins/48/pin2.png',
+						iconUrl : 'map-icons/pins/48/pin3.png',
 						iconSize : [48, 48],
 						iconAnchor : [24, 48]
 				});
 	
 	this.SELECTEDICON = L.icon({
-						iconUrl : 'map-icons/pins/48/pin1.png',
+						iconUrl : 'map-icons/pins/48/pin4.png',
 						iconSize : [48, 48],
 						iconAnchor : [24, 48]
 				});
@@ -64,7 +64,7 @@ GeoPoster.Map = function() {
 				return L.marker(latlng, {
 					title : feature.properties.title,
 					icon : L.icon({
-						iconUrl : 'map-icons/pins/48/pin2.png',
+						iconUrl : 'map-icons/pins/48/pin3.png',
 						iconSize : [48, 48],
 						iconAnchor : [24, 48]
 					}),
@@ -165,7 +165,7 @@ GeoPoster.Map = function() {
 			
 			marker = L.marker(this_.map.getCenter(), {
 				icon : L.icon({
-						iconUrl : 'map-icons/pins/48/pin2.png',
+						iconUrl : 'map-icons/pins/48/pin3.png',
 						iconSize : [48, 48],
 						iconAnchor : [24, 48]
 					}),
