@@ -26,6 +26,7 @@ api = Blueprint('api', __name__, url_prefix='/geoposter')
 def check_login(username, password):
     user = g.db.query(User).filter(and_(User.name==username, User.password==password)).first()
     if (user != None):
+        g.user = user
         return True
     else:
         return False
@@ -52,6 +53,7 @@ def before_request():
 @api.teardown_request
 def teardown_request(exception):
     db = getattr(g, 'db', None)
+    g.user = None
     if db is not None:
         db.close()
 
@@ -88,8 +90,7 @@ def insertMarker():
     
     markerAsJSON = json.loads(request.data)
     marker = Marker(markerAsJSON)
-    #HARDCODE FOREVER!!
-    marker.user_id = 1
+    marker.user_id = g.user.id
     g.db.add(marker)
     g.db.commit()
     
