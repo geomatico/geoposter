@@ -44,7 +44,7 @@ Now you will need to serve all API operations on the web. You can do this in sev
 		allow from all
 	</Directory>
 
-3. Modify the geoposter.wsgi file::
+3. Modify the ``geoposter.wsgi`` file::
 
 	sys.path.insert(0, 'the path to /geoposter-api/geoposter')
 	
@@ -53,20 +53,29 @@ Now you will need to serve all API operations on the web. You can do this in sev
 	activate_this = 'the path to your virtualenv /venv/bin/activate_this.py'
 	execfile(activate_this, dict(__file__=activate_this))
 	
-5. Reload or Restart the Apache HTTP Server and enjoy it!. You can see the logs from the GeoPoster API in the ``error.log`` file in the Apache folder's log.
+5. Create the user and database in your PostGIS instance.
+	
+6. Add the necessary information to connect to the database in the config.py file::
+
+	 SQLALCHEMY_DATABASE_URI = "postgresql://username:password@host/database"
+    
+    USER = "username"
+    PASSWORD = "password"
+	
+7. Reload or Restart the Apache HTTP Server and enjoy it!. You can see the logs from the GeoPoster API in the ``error.log`` file in the Apache folder's log.
 	
 To develop
 ==========
 
-You can develop in the GeoPoster REST API like another Python project. In order to use the smallest framework possible we decide to use Flask. Flask allows make good web services on REST easily and funny. To manage the database we use GeoAlchemy 2. This project is an ORM with spatial features that allowing us to manage the database easily too. You'll find more documentation about these projects in its web. 
+You can develop in the GeoPoster REST API like another Python project. In order to use the smallest framework possible we decide to use **Flask**. **Flask** allows make good web services on REST easily and funny. To manage the database we use **GeoAlchemy 2**. This project is an ORM with spatial features that allowing us to manage the database easily too. You'll find more documentation about these projects in its web. 
 
-To starts to develope on the GeoPoster API REST project:
+To start to develope on the GeoPoster API REST project:
 
 1. Clone the GitHub repository::
 
 	git clone ....
 	
-2. Creates a virtual environment in the folder that you wants::
+2. Create a virtual environment in the folder that you wants::
 
 	$ mkdir myproject
 	$ cd myproject
@@ -83,6 +92,13 @@ To starts to develope on the GeoPoster API REST project:
 	python setup.py install
 	
 5. Import the project on your favorite IDE.
+6. Create the user and database in your PostGIS instance.	
+7. Add the necessary information to connect to the database in the config.py file::
+
+	 SQLALCHEMY_DATABASE_URI = "postgresql://username:password@host/database"
+    
+    USER = "username"
+    PASSWORD = "password"
 
 	
 
