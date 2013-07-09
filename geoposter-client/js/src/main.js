@@ -64,6 +64,7 @@ $(document).ready(function() {
 		height : 300,
 		width : 350,
 		modal : true,
+		closeOnEscape : false,
 		buttons : {
 			"Sign in" : function() {
 				var bValid = true;
