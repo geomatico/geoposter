@@ -71,7 +71,7 @@ $(document).ready(function() {
 				allFields.removeClass("ui-state-error");
 
 				bValid = bValid && checkLength(name, "username", 3, 16);
-				bValid = bValid && checkLength(password, "password", 5, 16);
+				bValid = bValid && checkLength(password, "password", 4, 16);
 
 				bValid = bValid && checkRegexp(name, /^[a-z]([0-9a-z_])+$/i, "Username may consist of a-z, 0-9, underscores, begin with a letter.");
 				// From jquery.validate.js (by joern), contributed by Scott Gonzalez: http://projects.scottsplayground.com/email_address_validation/
