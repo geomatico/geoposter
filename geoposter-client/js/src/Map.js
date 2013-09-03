@@ -172,8 +172,8 @@ GeoPoster.Map = function() {
 				riseOnHover : true
 			});
 
-			marker.title = "Títol...";
-			marker.content = "Contingut...";
+			marker.title = "Title...";
+			marker.content = "Contents...";
 			marker.on('click', function(e) {
 				this_.selectItem(e.target);
 			});
