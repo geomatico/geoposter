@@ -69,7 +69,7 @@ To develop
 
 You can develop in the GeoPoster REST API like another Python project. In order to use the smallest framework possible we decide to use **Flask**. **Flask** allows make good web services on REST easily and funny. To manage the database we use **GeoAlchemy 2**. This project is an ORM with spatial features that allowing us to manage the database easily too. You'll find more documentation about these projects in its web. 
 
-To start to develope on the GeoPoster API REST project:
+To start to develop on the GeoPoster API REST project:
 
 1. Clone the GitHub repository::
 
