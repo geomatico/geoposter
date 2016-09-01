@@ -7033,7 +7033,7 @@ wysihtml5.Commands = Base.extend(
       BLOCK_ELEMENTS_GROUP    = ["H1", "H2", "H3", "H4", "H5", "H6", "P", "BLOCKQUOTE", DEFAULT_NODE_NAME];
   
   /**
-   * Remove similiar classes (based on classRegExp)
+   * Remove similar classes (based on classRegExp)
    * and add the desired class name
    */
   function _addClass(element, className, classRegExp) {
@@ -7201,7 +7201,7 @@ wysihtml5.Commands = Base.extend(
         return;
       }
 
-      // Find similiar block element and rename it (<h2 class="foo"></h2>  =>  <h1 class="foo"></h1>)
+      // Find similar block element and rename it (<h2 class="foo"></h2>  =>  <h1 class="foo"></h1>)
       if (nodeName === null || wysihtml5.lang.array(BLOCK_ELEMENTS_GROUP).contains(nodeName)) {
         selectedNode = composer.selection.getSelectedNode();
         blockElement = dom.getParentElement(selectedNode, {
