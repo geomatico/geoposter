@@ -10,9 +10,9 @@ class DefaultConfig(object):
     Default configuration for a geoposter application.
     """
 
-    SQLALCHEMY_DATABASE_URI = "postgresql://geoposter:geoposter@192.168.0.199/geoposter"
+    SQLALCHEMY_DATABASE_URI = "postgresql://${DB_USER}:${DB_PASS}@${DB_HOST}/${DB_NAME}"
     SQLALCHEMY_ECHO = True
     DEBUG = True
-    
-    USER = "geoposter"
-    PASSWORD = "geoposter"
+
+    USER = "${DB_USER}"
+    PASSWORD = "${DB_PASS}"
