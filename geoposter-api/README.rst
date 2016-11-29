@@ -59,9 +59,6 @@ Now you will need to serve all API operations on the web. You can do this in sev
 
 	 SQLALCHEMY_DATABASE_URI = "postgresql://username:password@host/database"
     
-    USER = "username"
-    PASSWORD = "password"
-	
 7. Reload or Restart the Apache HTTP Server and enjoy it!. You can see the logs from the GeoPoster API in the ``error.log`` file in the Apache folder's log.
 	
 To develop
@@ -96,13 +93,9 @@ To start to develop on the GeoPoster API REST project:
 7. Add the necessary information to connect to the database in the config.py file::
 
 	 SQLALCHEMY_DATABASE_URI = "postgresql://username:password@host/database"
-    
-    USER = "username"
-    PASSWORD = "password"
 
 Roadmap
 =======
 
 * Add user management
-	
 
