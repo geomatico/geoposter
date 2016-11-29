@@ -1,0 +1,40 @@
+version: '2'
+services:
+  postgis:
+    image: kartoza/postgis
+    volumes:
+      - "./postgres_data:/var/lib/postgresql"
+    ports:
+      - 25432:5432
+    environment:
+      - POSTGRES_USER=geoposter
+      - POSTGRES_PASS=geoposter
+      - ALLOW_IP_RANGE=0.0.0.0/0
+    restart: always
+  api:
+    depends_on:
+      - postgis
+    build:
+      context: api
+      args:
+        DB_HOST: postgis
+        DB_NAME: geoposter
+        DB_USER: geoposter
+        DB_PASS: geoposter
+    image: geoposter-api
+    links:
+      - postgis
+    ports:
+      - 8000:8000
+    restart: always
+  client:
+    depends_on:
+      - api
+    build:
+      context: client
+      args:
+        URLAPI: http://localhost:8000/geoposter
+    image: geoposter-client
+    ports:
+      - 80:80
+    restart: always
