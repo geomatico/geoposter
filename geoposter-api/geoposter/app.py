@@ -7,6 +7,7 @@ Created on 10/06/2013
 from database import init_db
 from config import DefaultConfig
 from flask import Flask
+from flask_cors import CORS
 from views.api import api
 
 DEFAULT_APP_NAME = "geoposter"
@@ -18,6 +19,7 @@ def create_app(config=None, app_name=None, blueprints=None):
         app_name = DEFAULT_APP_NAME
 
     app = Flask(app_name)
+    CORS(app)
     app.register_blueprint(api)
     
     configure_app(app, config)
