@@ -14,5 +14,5 @@ class DefaultConfig(object):
     SQLALCHEMY_ECHO = True
     DEBUG = True
 
-    USER = "${DB_USER}"
-    PASSWORD = "${DB_PASS}"
+    USER = "${API_USER}"
+    PASSWORD = "${API_PASS}"
