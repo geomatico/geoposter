@@ -2,8 +2,8 @@ FROM nginx:alpine
 
 MAINTAINER Oscar Fonts <oscar.fonts@geomati.co>
 
-ENV BRANCH branding_besos
-ARG URLAPI
+ARG BRANCH=master
+ARG URLAPI=http://localhost:8000/geoposter
 
 RUN apk update \
  && apk add wget  \

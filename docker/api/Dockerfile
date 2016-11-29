@@ -2,10 +2,10 @@ FROM python:2.7
 
 MAINTAINER Oscar Fonts <oscar.fonts@geomati.co>
 
-ARG DB_HOST
-ARG DB_NAME
-ARG DB_USER
-ARG DB_PASS
+ARG DB_HOST=postgis
+ARG DB_NAME=geoposter
+ARG DB_USER=geoposter
+ARG DB_PASS=geoposter
 
 RUN apt-get update \
  && apt-get install -y --no-install-recommends unzip gettext postgresql-client \
@@ -30,4 +30,4 @@ COPY wait-for-postgres.sh .
 
 EXPOSE 8000
 
-CMD ./wait-for-postgres.sh postgresql://geoposter:geoposter@postgis
+CMD ./wait-for-postgres.sh postgresql://${DB_USER}:${DB_PASS}@${DB_HOST}

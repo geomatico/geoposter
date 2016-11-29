@@ -34,6 +34,7 @@ services:
       context: client
       args:
         URLAPI: http://localhost:8000/geoposter
+        BRANCH: master
     image: geoposter-client
     ports:
       - 80:80
