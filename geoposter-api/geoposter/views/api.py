@@ -82,7 +82,7 @@ def getMarkers():
         
         return jsonify(type ='FeatureCollection', features = markersJSON)
     except:
-        return Response('Some problem occured on server, please try in few moments!', 500)
+        return Response('Some problem occurred on server, please try in few moments!', 500)
     
 @api.route('/marker', methods=['POST'])
 @requires_login

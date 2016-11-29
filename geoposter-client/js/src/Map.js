@@ -13,13 +13,13 @@ GeoPoster.Map = function() {
 	this.INFO = {type : 'alert-info', title : 'Information'};;
 	
 	this.DEFAULTICON = L.icon({
-						iconUrl : 'map-icons/pins/48/pin2.png',
+						iconUrl : 'map-icons/pins/48/pin3.png',
 						iconSize : [48, 48],
 						iconAnchor : [24, 48]
 				});
 	
 	this.SELECTEDICON = L.icon({
-						iconUrl : 'map-icons/pins/48/pin1.png',
+						iconUrl : 'map-icons/pins/48/pin4.png',
 						iconSize : [48, 48],
 						iconAnchor : [24, 48]
 				});
@@ -64,7 +64,7 @@ GeoPoster.Map = function() {
 				return L.marker(latlng, {
 					title : feature.properties.title,
 					icon : L.icon({
-						iconUrl : 'map-icons/pins/48/pin2.png',
+						iconUrl : 'map-icons/pins/48/pin3.png',
 						iconSize : [48, 48],
 						iconAnchor : [24, 48]
 					}),
@@ -93,23 +93,19 @@ GeoPoster.Map = function() {
 	}
 	
 	this.init = function(div) {
-		
-		var cloudmadeUrl = 'http://{s}.tile.cloudmade.com/f9b48b21a87048bfb118148491d22ec5/{styleId}/256/{z}/{x}/{y}.png';
-		var cloudmadeAttribution = 'Map data &copy; OpenStreetMap contributors, imagery &copy; CloudMade';
-
-		ride = L.tileLayer(cloudmadeUrl, {
-			styleId : 1714,
-			attribution : cloudmadeAttribution
+		var Hydda_Full = L.tileLayer('http://{s}.tile.openstreetmap.se/hydda/full/{z}/{x}/{y}.png', {
+			attribution: 'Tiles courtesy of <a href="http://openstreetmap.se/" target="_blank">OpenStreetMap Sweden</a> &mdash; Map data &copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
 		});
-		minimal = L.tileLayer(cloudmadeUrl, {
-			styleId : 22677,
-			attribution : cloudmadeAttribution
+		var CartoDB_Positron = L.tileLayer('http://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}.png', {
+			attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a> &copy; <a href="http://cartodb.com/attributions">CartoDB</a>',
+			subdomains: 'abcd',
+			maxZoom: 19
 		});
-		midnight = L.tileLayer(cloudmadeUrl, {
-			styleId : 999,
-			attribution : cloudmadeAttribution
-		});
-		
+		var CartoDB_DarkMatter = L.tileLayer('http://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}.png', {
+                        attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a> &copy; <a href="http://cartodb.com/attributions">CartoDB</a>',
+                        subbdomains: 'abcd',
+                        maxZoom: 19
+                });
 		L.Map.include({'getMarkersBound' : function() {
 									var bounds = new L.LatLngBounds();
 									for (var i in this._layers) {							
@@ -125,13 +121,13 @@ GeoPoster.Map = function() {
 			center : [41.437514611861786, 2.206707000732422],
 			zoom : 12,
 			maxBounds : [[-90, -180], [90, 180]],
-			layers : [ride]
+			layers : [Hydda_Full]
 		});
 
 		L.control.layers({
-			"Ride" : ride,
-			"Minimal" : minimal,
-			"Midnight" : midnight
+			"Soft" : Hydda_Full,
+			"Grey" : CartoDB_Positron,
+			"Dark" : CartoDB_DarkMatter
 		}).addTo(this.map);
 
 		$('#title').editable({
@@ -165,15 +161,15 @@ GeoPoster.Map = function() {
 			
 			marker = L.marker(this_.map.getCenter(), {
 				icon : L.icon({
-						iconUrl : 'map-icons/pins/48/pin2.png',
+						iconUrl : 'map-icons/pins/48/pin3.png',
 						iconSize : [48, 48],
 						iconAnchor : [24, 48]
 					}),
 				riseOnHover : true
 			});
 
-			marker.title = "Títol...";
-			marker.content = "Contingut...";
+			marker.title = "Title...";
+			marker.content = "Contents...";
 			marker.on('click', function(e) {
 				this_.selectItem(e.target);
 			});
@@ -189,8 +185,8 @@ GeoPoster.Map = function() {
 			marker.feature = {
 				"type" : "Feature",
 				"properties" : {
-					"title" : "Títol...",
-					"description" : "Contingut..."
+					"title" : "Title...",
+					"description" : "Contents..."
 				},
 				"geometry" : {
 					"type" : "Point",

@@ -84,6 +84,7 @@ body {
 
 .thumbnail.editable {
 	margin-top: 10px;
+	background-color: #FAFAFA;
 }
 
 .container-fluid {
@@ -119,6 +120,10 @@ body {
 
 .logo {
 	background-color: #f3f5f7;
+}
+
+.ima_logo {
+	margin: 10px;
 }
 
 .btn {
